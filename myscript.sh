@@ -15,7 +15,7 @@ then
   exit
 fi
 
-if [ ! -d /data/gemini/$1 ]
+if [ ! -d $backupfolder ]
 then
   echo 'The directory given does not exist'
   exit
@@ -34,9 +34,9 @@ then
   exit
 fi
 
-md5sum -c $4/$md5file > $4/$checkfile
+md5sum -c $backupfolder/$md5file > $4/$checkfile
 cat $4/checkfile
-md5sum -c $4/$md5file 2> $4/$errorfile
+md5sum -c $backupfolder/$md5file 2> $4/$errorfile
 cat $4/errorfile
 
 
