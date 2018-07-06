@@ -1,4 +1,4 @@
-# BIOL68400 Programming Project
+# CBI-5 Programming Project
  - myscript.sh
  
 By Tengyue Zheng
