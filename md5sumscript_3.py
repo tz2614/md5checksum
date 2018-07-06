@@ -34,73 +34,48 @@ def main(rf):
 
     md5_list = [x for x in md5_list if x.split(".")[-1] not in filetoexclude]
 
+
     if os.path.exists(checkfilepath):
         print 'This folder has already been checked today'
         exit()
-    
+
     else:
         createchk = "touch /{}".format(checkfilepath)
-        #print createchk
         subprocess.call(createchk, shell=True)
+        print "check log {} generated".format(checkfilepath)
         createerr = "touch /{}".format(errorfilepath)
-        #print createerr
         subprocess.call(createerr, shell=True)
+        print "error log {} generated".format(errorfilepath)
 
-    for md5 in md5_list:
-        md5file = md5 + ".md5"
-        #print md5file 
-        
-        if not os.path.exists(md5file):
-            print "md5file for {} do not exist".format(md5)
-            continue
-        else:
-            md5chk = "md5sum -c {} >> {} 2>> {}".format(md5file, checkfilepath, errorfilepath)
-            #print md5chk
-            subprocess.call(md5chk, shell=True)
+    return checkfilepath, errorfilepath
 
-    """if not md5file:
-            print 'The md5file do not exist, creating a new md5file'
-            createmd5 = "md5sum rf/*.bam /vcfs/*.vcf *.vcf > hash.md5"
-            subprocess.call(createmd5, shell=True)
-            copymd5 = "cp rf/hash.md5 > destination/md5file"
-            subprocess.call(copymd5, shell=True) """
+def create_md5(create_list):
 
-        #copy=sh.awk("'{print $1}'hash.md5")
-
-        #original=sh.awk("'{print $1}'filepath/hash.md5")
+    """ This function is used to create .md5 file for each of the files 
+    within the testbamfiles/ directory"""
     
-        #if copy == original:
-            #checkfile.append("file integrity intact\n")
-            #continue
-        #else:
-            #checkfile.append("file integrity compromised\n")
-
-def createmd5(rf):
-    rf_path = os.path.abspath(rf)
-    bam_list = sorted(glob.glob("{}/bams/*.bam".format(str(rf_path))))
-    #print bam_list
-    vcf_list = sorted(glob.glob("{}/vcfs/*.vcf".format(str(rf_path))))
-    #print vcf_list
-    otherfile_list = sorted(glob.glob("{}/*.*".format(str(rf_path))))
-    all_list = bam_list + vcf_list + otherfile_list
-    #print all_list
-
-    filetoexclude = [".md5", ".chk", ".err"]
-
-    for md5 in all_list:
+    for x in create_list:
         #print md5
-        if any ([md5.endswith(x) for x in filetoexclude]):
+        if x.endswith("md5"):
             continue
 
         else:
-            md5file = md5 + ".md5"
+            md5file = x + ".md5"
             #print md5file
         
         if not os.path.exists(md5file):
-            print 'The md5file do not exist, creating a new md5file'
-            createmd5 = "md5sum {} > {}".format(md5, md5file)
+            createmd5 = "md5sum {} > {}".format(x, md5file)
+            print createmd5
             subprocess.call(createmd5, shell=True)
+            print "new md5 file generated, {}".format(md5file)
+
+def main(rf):
+
+    rf_path = os.path.abspath(rf)
+    create_list, check_list = create_md5_list(rf_path)
+    create_md5(create_list)
+    checkfilepath, errorfilepath = create_logfiles(rf_path)
+    check_md5(checkfilepath, errorfilepath, check_list)
 
 if __name__ == "__main__":
     main(sys.argv[1])
-    createmd5(sys.argv[1])

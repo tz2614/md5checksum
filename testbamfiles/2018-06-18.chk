@@ -1,0 +1,6 @@
+/data/projects/zhengt/md5sumcheck/testbamfiles/tempbam.sorted.bam: OK
+/data/projects/zhengt/md5sumcheck/testbamfiles/tempbam.sorted.bam.bai: OK
+/data/projects/zhengt/md5sumcheck/testbamfiles/tempbam.sorted.rmdup.bam: OK
+/data/projects/zhengt/md5sumcheck/testbamfiles/tempbam.bam: FAILED
+/data/projects/zhengt/md5sumcheck/testbamfiles/tempbam.sorted.rmdup.bam.bai: OK
+/data/projects/zhengt/md5sumcheck/testbamfiles/bams/tempbam.bam: OK
