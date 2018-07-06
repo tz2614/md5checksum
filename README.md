@@ -6,7 +6,7 @@ By Tengyue Zheng
 
 ## Function:
 
-md5sum file integreity checker for checking vcf and bam files in a runfolder using Python 2.7.12
+File integrity checker for checking vcf and bam files in a runfolder using Python 2.7.12
 
 To clone Git repository go here: https://github.com/tz2614/
 
