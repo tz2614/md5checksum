@@ -1,5 +1,5 @@
 # BIOL68400 Programming Project
-myscript.sh
+ - myscript.sh
 By Tengyue Zheng
 22/02/2018
 
@@ -16,7 +16,7 @@ The test bam and vcf files are available upon request by email @ tony_zheng35@ho
  (unique valued - 31 characters long)
 
 ## User Stories:
-- run python script by specifying the path of runfolder and path of the md5file as arguments
+- Run python script by specifying the path of runfolder and path of the md5file as arguments
 - Input logic tests
 - Parse the md5 checksum values and filenames to a .md5 file and cross check the md5 checksum values in the backup folder by running the following command in the shell script:
 
