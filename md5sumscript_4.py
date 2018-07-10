@@ -36,19 +36,19 @@ def create_md5_list(rf_path):
 
     """create a list of md5 files to check against within the specified directory"""
 
-    md5_list = sorted(glob.glob("{}/*.*".format(str(rf_path))))
+    #The following creates a list of files to check the file integrity of all files in the specified directory recursively.
+    md5_list = []
+    for root, dirname, filenames in os.walk(rf_path):
+        for filename in filenames:
+            md5_list.append(os.path.join(root, filename))
+    #print (md5_list)
     create_exclude_list = ["md5", "chk", "err"]
     check_exclude_list = ["chk", "err"]
     create_list = [x for x in md5_list if x.split(".")[-1] not in create_exclude_list]
     check_list = [x for x in md5_list if x.split(".")[-1] not in check_exclude_list]
     return create_list, check_list
 
-    """The following creates a list of files to check the file integrity of all files in the specified directory recursively."""
-
-    """md5_list = []
-    for root, dirname, filenames in os.walk(rf_path):
-        for filename in filenames:
-            md5_list.append(os.path.join(root, filename))"""
+    #md5_list = sorted(glob.glob("{}/*.*".format(str(rf_path))))
 
 def create_logfiles(rf_path):
 
