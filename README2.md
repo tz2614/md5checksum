@@ -1,5 +1,4 @@
 # CBI-5 Programming Project
- - myscript.sh
  - md5sumscript_4.py
  
 By Tengyue Zheng
@@ -11,11 +10,10 @@ File integrity checker for checking vcf and bam files in a runfolder using Pytho
 
 To clone Git repository go here: https://github.com/tz2614/
 
-The test bam and vcf files are available upon request by email @ tony_zheng35@hotmail.com
+The test bam files are available upon request by email @ tony_zheng35@hotmail.com
 
 ## User Requirements:
-- Run the myscript.sh shell script in the original runfolder to create MD5 values for all the bam and vcf files in the runfolder
- (unique valued - 31 characters long), if the .md5 values are not already present. Alternatively, you can run the md5sumscript_4.py to create the .md5 files.
+- check file integrity of the files within the specified runfolder using md5 checksum values.
 
 ## User Stories:
 - Run md5sumscript_4.py python script by specifying the path of runfolder as argument
@@ -32,25 +30,36 @@ a function that create a error log(.err) and check log(.chk) within the specifie
 a function that create .md5 for each file in the create_list
 ```create_md5(create_list)```
 
-The check_md5 function checks the md5 checksum values from the .md5 file against the md5 checksum values generated in situ by running the following command in Bash terminal:
-
- ```Bash
- md5sum -c X0001234.md5
- ```
-
-Input: ./myscript.sh ./testbamfiles/bams
-
-Output:
+- view the results of the check, open the .chk or .err file located within the specified runfolder
 
 ```Bash
-27e43885cd0f92e0c60b97e19d9499fa  tempbam.bam
-05585733ed0049ac9d95f8756a3edc4a  tempbam.sorted.bam
-638852e4ef6fa50615a79567326d43a8  tempbam.sorted.bam.bai
-4b22dadbcc57009a3f89fb57866d7eaf  tempbam.sorted.rmdup.bam
-af1b0691ceb244c6d23d511d33469eeb  tempbam.sorted.rmdup.bam.bai
+[user@login01 md5checksum]$ cat testbamfiles/YEAR-MONTH-DAY.chk
+[user@login01 md5checksum]$ cat testbamfiles/YEAR-MONTH-DAY.err
 ```
+e.g.
+```Bash
+[user@login01 md5checksum]$ cat testbamfiles/2018-07-10.chk
+~/md5checksum/testbamfiles/bams/tempbam.sorted.rmdup.bam: OK
+~/md5checksum/testbamfiles/bams/tempbam.sorted.rmdup.bam.bai: OK
+~/md5checksum/testbamfiles/bams/tempbam.sam: OK
+~/md5checksum/testbamfiles/bams/tempbam.bam: OK
+~/md5checksum/testbamfiles/bams/tempbam.sorted.bam: OK
+~/md5checksum/testbamfiles/bams/tempbam.sorted.bam.bai: OK
+```
+
 Input: ./md5sumscript_4.py /testbamfiles/bams
 
 Output:
 
 ```Bash
+checkfilepath created
+errorfilepath created
+check log ~/md5checksum/testbamfiles/YEAR-MONTH-DAY.chk generated
+error log ~/md5checksum/testbamfiles/YEAR-MONTH-DAY.err generated
+~md5checksum/testbamfiles/bams/tempbam.sam.md5 checked
+~md5checksum/testbamfiles/bams/tempbam.bam.md5 checked
+~md5checksum/testbamfiles/bams/tempbam.sorted.bam.md5 checked
+~md5checksum/testbamfiles/bams/tempbam.sorted.bam.bai.md5 checked
+~md5checksum/testbamfiles/bams/tempbam.sorted.rmdup.bam.md5 checked
+~md5checksum/testbamfiles/bams/tempbam.sorted.rmdup.bam.bai.md5 checked
+```
