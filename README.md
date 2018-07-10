@@ -13,11 +13,11 @@ To clone Git repository go here: https://github.com/tz2614/
 The test bam and vcf files are available upon request by email @ tony_zheng35@hotmail.com
 
 ## User Requirements:
-- Run the shell/python script in the original runfolder to create MD5 values for all the bam and vcf files in the runfolder
+- Run the shell script in the original runfolder to create MD5 values for all the bam and vcf files in the runfolder
  (unique valued - 31 characters long)
 
 ## User Stories:
-- Run python script by specifying the path of runfolder and path of the md5file as arguments
+- Run shell script by specifying the path of runfolder and path of the md5file as arguments
 - Input logic tests
 - Parse the md5 checksum values and filenames to a .md5 file and cross check the md5 checksum values in the backup folder by running the following command in the shell script:
 
