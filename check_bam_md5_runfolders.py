@@ -8,16 +8,18 @@ import datetime
 import subprocess
 import pprint as pp
 
-def missing_md5_list(storage, wkdir):
+def create_bam_md5_dict(runfolders, wkdir):
 
-    #identify all bam files in the gemini folder and assign it to bam_list
+    #identify all bam and md5 files in the gemini folder
     
     #1. apply a regular expression pattern matching to identify all runfolders that contain the gemini runs.
     #2. place all runfolder into a unique set of list.
-    #3. iterate through the list to find all bam files and append the path to the file in a text file.
+    #3. iterate through the list to find all bam and md5 files and append the path of the file in a text file.
 
-    assert (storage == "/mnt/storage/data/NGS" or storage == "/mnt/storage/data/NGS/"), "runfolder given incorrect"
-    runfolder_pattern = "{}/*/*/[0-9][0-9][0-9][0-9][0-9][0-9]_*/bams/".format(str(storage))
+    assert (runfolders == "/mnt/storage/data/NGS" or runfolders == "/mnt/storage/data/NGS/"
+        or runfolders == "/mnt/archive/data/NGS" or runfolders == "/mnt/archive/data/NGS"), "runfolder given incorrect"
+
+    runfolder_pattern = "{}/*/*/[0-9][0-9][0-9][0-9][0-9][0-9]_*/bams/".format(str(runfolders))
     
     #generate a list of filepath to the runfolders containing bam, md5 files in the geminifolder. 
 
@@ -49,6 +51,13 @@ def missing_md5_list(storage, wkdir):
         bam_md5_dict[runfolder]["bam"] = new_bam_list
 
     #pp.pprint(bam_md5_dict)
+    return bam_md5_dict
+
+def create_bam_md5_lists(bam_md5_dict, wkdir)
+
+    bam_without_md5_list = []
+    md5_with_bam_list = []
+    md5_without_bam_list = []
 
     # if bam filename in md5 filename list, then we know there is a matching md5 with the bam, create two textfile lists. one bam with md5, one bam without md5.
     for runfolder in runfolder_list:
@@ -58,20 +67,22 @@ def missing_md5_list(storage, wkdir):
             bam_md5 = bam_file + ".md5"
             if bam_md5 in bam_md5_dict[runfolder]["md5"]:
                 print ('md5 for {} is present'.format(bam_file))
+                md5_file = os.path.abspath(runfolder) + "/" + bam_md5
+                md5_with_bam_list.append(md5_file)
                 with open(os.path.join(wkdir,'bam_with_md5.txt'), 'a') as good_bam:
                     bam_file = os.path.abspath(runfolder) + "/" + bam_file
                     good_bam.writelines('{}\n'.format(bam_file))
             else:
-                #bam_list_with_md5.append(bam)
                 print ('md5 for {} is missing'.format(bam_file))
-                with open(os.path.join(wkdir,'bam_err_list.txt'), 'a') as bad_bam:
-                    bam_file = os.path.abspath(runfolder) + "/" + bam_file
+                bam_file = os.path.abspath(runfolder) + "/" + bam_file
+                bam_without_md5_list.append(bam_file)
+                with open(os.path.join(wkdir,'bam_without_md5.txt'), 'a') as bad_bam:
                     bad_bam.writelines('{}\n'.format(bam_file))
 
     with open(os.path.join(wkdir, "bam_with_md5.txt"), "a") as good_bam:
         good_bam.writelines('date of this check: {}\n'.format(datetime.datetime.now()))
 
-    with open(os.path.join(wkdir, "bam_err_list.txt"), "a") as bad_bam:
+    with open(os.path.join(wkdir, "bam_without_md5.txt"), "a") as bad_bam:
         bad_bam.writelines('date of this check: {}\n'.format(datetime.datetime.now()))
 
     # if md5 filename not in bam filename list, create a list of md5, where the bam is missing.
@@ -83,20 +94,22 @@ def missing_md5_list(storage, wkdir):
                 print ('bam for {} is missing'.format(md5_file))
                 with open(os.path.join(wkdir,'md5_err_list.txt'), 'a') as bad_md5:
                     md5_file = os.path.abspath(runfolder) + "/" + md5_file
+                    md5_without_bam_list.append(md5_file)
                     bad_md5.writelines('bam for {} is missing \n'.format(md5_file))
     
     with open(os.path.join(wkdir, "md5_err_list.txt"), "a") as bad_md5:
         bad_md5.writelines('date of this check: {}\n'.format(datetime.datetime.now()))
 
-    return bam_md5_dict
+    return bam_without_md5_list, md5_with_bam_list, md5_without_bam_list
         
-def main(storage, wkdir):
-    storage = os.path.abspath(storage)
-    print ("storage directory currently being checked: ", storage)
+def main(runfolders, wkdir):
+    runfolders = os.path.abspath(runfolders)
+    print ("directory currently being checked: ", runfolders)
     wkdir = os.path.abspath(wkdir)
     print ("directory where the list of bams/md5 is stored: ", wkdir)
-    #execute function to find a list of bam files missing md5
-    missing_md5_list(storage, wkdir)
+    #execute function to find a list of bam files missing md5, a list of md5 with associated bam, and a list of md5 without associated bam
+    bam_md5_dict = create_bam_md5_dict(runfolders, wkdir)
+    create_bam_md5_lists(bam_md5_dict, wkdir)
     print ("all bam files checked for associated md5 file")
 
 if __name__ == "__main__":
