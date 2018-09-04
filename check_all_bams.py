@@ -2,8 +2,8 @@
 
 import sys
 import pprint
-import md5sumscript_5
-import check_bam_md5_runfolders
+import md5sumscript_6
+import create_bam_md5_lists
 import os
 import timeit
 
@@ -17,7 +17,7 @@ def check_NGS_bam_md5(runfolders, wkdir)
     bam_md5_dict = check_bam_md5_runfolders.create_bam_md5_dict(runfolders, wkdir)
     
     #use the generated dictionary above, create a list of all bams without md5, a list of md5 with bam, and a list of md5 without bam
-    bam_without_md5, md5_with_bam, md5_without_bam = check_bam_md5_runfolders.create_bam_md5_lists(bam_md5_dict, wkdir)
+    bam_without_md5, md5_with_bam, md5_without_bam = create_bam_md5_lists.create_bam_md5_lists(bam_md5_dict, wkdir)
     
     #create the check and error log files
     checkfilepath, errorfilepath = md5sumscript_5.create_logfiles(wkdir)
