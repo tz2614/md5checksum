@@ -26,9 +26,9 @@ def create_two_lists(rf_path):
                 bam_list.append(os.path.join(root, filename))
             if filename.split(".")[-2] == "bam" and filename.endswith(".md5"):
                 md5_list.append(os.path.join(root, filename))
-    create_list = bam_list
+    create_list = [os.path.abspath(bam) for bam in bam_list]
     #print ("create_list:", create_list)
-    check_list = md5_list
+    check_list = [os.path.abspath(md5) for md5 in md5_list]
     #print ("check_list:", check_list)
     
     return list(set(create_list)), list(set(check_list))
@@ -40,6 +40,8 @@ def create_md5(create_list, rf_path):
     for bam in create_list:
         #print (bam)
         bam_dir = os.path.dirname(bam)
+
+        #put datetime.datetime.now() for every log entry
 
         if bam.endswith(".bam"):
             md5file = bam + ".md5"
@@ -55,6 +57,7 @@ def create_md5(create_list, rf_path):
             print ("{} file missing".format(bam))
             with open(os.path.join(bam_dir, "bam_check.txt"), 'a') as bam_check:
                 bam_check.writelines("{} file missing".format(bam))
+                bam_check.writelines("time of check:{}".format(datetime.datetime.now()))
                 continue
         
         if os.path.exists(md5file):
@@ -138,18 +141,21 @@ def check_org_bkup(org_rf_path, bkup_rf_path, org_check_list, bkup_check_list):
             for line in md5_file:
                 fields = line.strip().split("  ")
                 if len(fields[0]) != 32:
+                    #comments
                     print ("{} hash do not have 32 characters".format(md5))
                     with open (os.path.join(org_rf_path, "org_bkup_check.txt"), "a") as org_bkup_check:
                         org_bkup_check.writelines("{} hash do not have 32 characters".format(md5))
                 
                 bam = fields[1].split("/")[-1]
                 if bam != bam_filename:
+                    #comments
                     print ("{} do not match {} in {}".format(bam_filename, bam, md5))
                     with open (os.path.join(org_rf_path, "org_bkup_check.txt"), "a") as org_bkup_check:
                         org_bkup_check.writelines("{} do not match {} in {}\n".format(bam_filename, bam, md5))
                     
                 else:
                     if md5_filename in check_dict["storage"]:
+                        #comments
                         print ("{} already in {}".format(md5_filename, md5_dir))
                         with open (os.path.join(org_rf_path, "org_bkup_check.txt"), "a") as org_bkup_check:
                             org_bkup_check.writelines("{} already in {}, duplicate found\n".format(md5_filename, md5_dir))
@@ -189,6 +195,7 @@ def check_org_bkup(org_rf_path, bkup_rf_path, org_check_list, bkup_check_list):
 
     #excess_md5s = set(org_md5_list) ^ set(bkup_md5_list)
         
+    #comments to explain what each dictionary stores 
     md5_matches = {}
     md5_matches["original"] = {}
     md5_matches["backup"] = {}
@@ -203,6 +210,8 @@ def check_org_bkup(org_rf_path, bkup_rf_path, org_check_list, bkup_check_list):
     md5_in_bkup_not_org["no hash match"] = {}
 
     for md5_filename in check_dict["archive"]:
+
+        #comment on what each statememnt checks
 
         print ("{} being compared".format(md5_filename))
         with open (os.path.join(bkup_rf_path, "org_bkup_check.txt"), "a") as org_bkup_check:
@@ -262,10 +271,6 @@ def check_org_bkup(org_rf_path, bkup_rf_path, org_check_list, bkup_check_list):
                 org_bkup_check.writelines("ERROR, mismatch found, {} not in backup folder, but matches hash of another .md5 in the backup folder\n".format(md5_filename))
             md5_in_org_not_bkup["hash match"][md5_filename] = check_dict["storage"][md5_filename]
 
-    if md5_matches["original"] or md5_matches["backup"]:
-        pp.pprint(md5_matches)
-    else:
-        print "no md5 matches found"
 
     if md5_mismatches["original"] or md5_mismatches["backup"]:
         pp.pprint(md5_mismatches)
