@@ -2,7 +2,7 @@
 
 import sys
 import pprint
-import md5sumscript_6
+import md5sumscript
 import create_bam_md5_lists
 import os
 import timeit
