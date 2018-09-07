@@ -7,16 +7,16 @@ import subprocess
 import pprint as pp
 import timeit
 
-
 """ md5file = the abspath of the md5file generated in the original runfolder that have been copied into the backup runfolder."""
 
 """ rf_path = the abspath of a backup runfolder """
 
 def create_two_lists(rf_path):
 
-    #The following creates a list of bam file and a list of md5 files to check the file integrity of all bam files in the specified directory.
+    #The following creates a list of bam file and a list of bam.md5 files in the specified directory.
     
-    assert os.path.exist(rf_path), "runfolder path DO NOT exist"
+    assert os.path.exists(rf_path), "runfolder path DO NOT exist"
+    assert os.path.isdir(create_org_runfolder), "runfolder path is NOT a directory"
 
     rf_path = os.path.abspath(rf_path)
     assert os.path.isabs(rf_path), "runfolder path NOT absolute"
@@ -32,85 +32,40 @@ def create_two_lists(rf_path):
             if filename.split(".")[-2] == "bam" and filename.endswith(".md5"):
                 md5_list.append(os.path.join(root, filename))
 
-    #convert all bam file and md5 file path to absolute file path
-    create_list = [os.path.abspath(bam) for bam in bam_list]
+    create_list = sorted(bam_list)
     #print ("create_list:", create_list)
-    check_list = [os.path.abspath(md5) for md5 in md5_list]
+    check_list = sorted(md5_list)
     #print ("check_list:", check_list)
     
     return list(create_list), list(check_list)
 
-def check_bam_exist(bam_path):
+def check_md5_exist(md5_path, rf_path):
 
-    #check if the bam file is present or not, record this in the bam_missing.txt log file
-
-    assert os.path.exist(bam_path), "bam path DO NOT exist"
-    bam_path = os.path.abspath(bam_path)
-    assert os.path.isabs(bam_path), "bam path NOT absolute"
-    bam_dir = os.path.abspath(os.path.dirname(bam_path))
-    assert os.path.isabs(bam_dir), "bam directory path NOT absolute"
-
-    if os.path.exists(bam_path):
-        print ("{} exist".format(bam_path))
-        with open(os.path.join(bam_dir, "bam_missing.txt"), 'a') as bam_check:
-            bam_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
-            bam_check.writelines("{} exist\n".format(bam_path))
-            return True
-
-    else:
-        print ("{} file missing".format(bam_path))
-        with open(os.path.join(bam_dir, "bam_missing.txt"), 'a') as bam_check:
-            bam_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
-            bam_check.writelines("{} missing\n".format(bam_path))
-            return False
-
-def check_md5_exist(md5_path):
-
-    #check if the md5 file is present or not, if so record this in the md5_missing.txt log file, if not generate the md5 file, 
-    #then record the new md5 file in the md5_missing.txt log file
-    
-    assert os.path.exist(md5_path), "md5 path DO NOT exist"
-    md5_path = os.path.abspath(md5_path)
-    assert os.path.isabs(md5_path), "md5 path NOT absolute"
-    md5_dir = os.path.dirname(md5_path)
-    assert os.path.isabs(md5_dir), "md5 directory path NOT absolute"
+    #check if the md5 file is present or not, if so record this in the md5_missing.txt log file.
          
     if os.path.exists(md5_path):
         print ("{} exist".format(md5_path))
-        with open(os.path.join(md5_dir, "md5_missing.txt"), 'a') as md5_check:
+        with open (os.path.join(rf_path, 'md5_missing.txt'), 'a') as md5_check:
             md5_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
-            md5_check.writelines("{} already exist\n".format(md5_path))
-            return True
+        return True
 
     else:
         print ("{} file missing".format(md5_path))
-        with open (os.path.join(md5_dir, 'md5_missing.txt'), 'a') as md5_check:
+        with open (os.path.join(rf_path, 'md5_missing.txt'), 'a') as md5_check:
             md5_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
             md5_check.writelines('{} file missing\n'.format(md5_path))
             return False
 
 def create_md5(create_list, rf_path):
 
-    """For each bam file in the create_list, check if the bam file and md5 file exists. If md5 associated with bam do not exist, create the md5 file"""
-
-    assert os.path.exist(rf_path), "runfolder path DO NOT exist"
-
-    rf_path = os.path.abspath(rf_path)
-    assert os.path.isabs(rf_path), "runfolder path NOT absolute"
+    """For each bam file in the create_list, check if the md5 file exists. 
+    If md5 associated with bam do not exist, create the md5 file"""
         
     for bam in create_list:
-        #print (bam)
-        if not check_bam_exist(bam):
-            create_list.remove(bam)
-            continue
+        if bam.endswith(".bam"):
+            md5file = bam + ".md5"
 
-        else:
-            if bam.endswith(".bam"):
-                md5file = bam + ".md5"
-                #print (md5file)
-                md5_dir = os.path.abspath(os.path.dirname(md5file))
-
-            if check_md5_exist(md5file):
+            if check_md5_exist(md5file, rf_path):
                 continue
 
             else:
@@ -118,19 +73,32 @@ def create_md5(create_list, rf_path):
                 print ("creating a new md5 file: {}".format(md5file))
                 subprocess.call(createmd5, shell=True)
                 print ("new md5 file {} generated".format(md5file))
-                with open (os.path.join(md5_dir, 'md5_missing.txt'), 'a') as new_md5:
-                    new_md5.writelines("time of check: {}\n".format(datetime.datetime.now()))
+                with open (os.path.join(rf_path, 'md5_missing.txt'), 'a') as new_md5:
+                    new_md5.writelines("time of generation: {}\n".format(datetime.datetime.now()))
                     new_md5.writelines('new md5 file {} generated\n'.format(md5file))
 
     return create_list
 
+def create_logfile(rf_path):
+
+    """create a log file in the specified directory called DATE.chk file"""
+
+    checkfile = str(datetime.datetime.now()).split(" ")[0] + ".chk"
+    checkfilepath = os.path.join(rf_path, checkfile)
+    checkfilepath = os.path.abspath(checkfilepath)
+    #print ("checkfilepath created")
+
+    if os.path.exists(checkfilepath):
+        print ('{} has already been checked today'.format(rf_path))
+
+    else:
+        createchk = "touch {}".format(checkfilepath)
+        subprocess.call(createchk, shell=True)
+        print ("check log {} generated".format(checkfilepath))
+
+    return checkfilepath
+
 def check_md5_hash(checkfilepath, md5, checksum):
-
-    assert os.path.exist(checkfilepath), "checkfile path DO NOT exist"
-
-    rf_path = os.path.abspath(checkfilepath)
-    assert os.path.isabs(checkfilepath), "checkfile path NOT absolute"
-
 
     if len(checksum) == 32:
         #print ("{}: {} have 32 characters".format(md5, checksum))
@@ -144,17 +112,12 @@ def check_md5_hash(checkfilepath, md5, checksum):
         with open (checkfilepath, "a") as md5_check:
             md5_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
             md5_check.writelines("{}: {} DO NOT have 32 characters\n".format(md5, checksum))
-            return False
+            return False    
 
 def check_filename_match(checkfilepath, bam_filename, bam, md5):
 
-    assert os.path.exist(checkfilepath), "checkfile path DO NOT exist"
-
-    rf_path = os.path.abspath(checkfilepath)
-    assert os.path.isabs(checkfilepath), "checkfile path NOT absolute"
-
     if bam == bam_filename:
-        print ("{} match {} in {}".format(bam_filename, bam, md5))
+        #print ("{} match {} in {}".format(bam_filename, bam, md5))
         with open (checkfilepath, "a") as md5_check:
             md5_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
             md5_check.writelines("{} match {} in {}\n".format(bam_filename, bam, md5))
@@ -167,206 +130,66 @@ def check_filename_match(checkfilepath, bam_filename, bam, md5):
             md5_check.writelines("ERROR, mismatch found, {} DO NOT match {} in {}\n".format(bam_filename, bam, md5))
             return False
 
-def check_filename_duplicate(checkfilepath, md5_filename, md5_dir, check_dict):
-
-    #check if the same md5 filename has been seen before, if so display the name of the file on terminal, and record the duplicate in error log.
-
-    assert os.path.exist(checkfilepath), "checkfile path DO NOT exist"
-
-    rf_path = os.path.abspath(checkfilepath)
-    assert os.path.isabs(checkfilepath), "checkfile path NOT absolute"
-
-    if md5_filename in check_dict:
-
-        
-        print ("{} already in {}, duplicate found".format(md5_filename, md5_dir))
-        with open (checkfilepath, "a") as md5_check:
-            md5_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
-            md5_check.writelines("{} already in {}, duplicate found\n".format(md5_filename, md5_dir))
-            return True
-
-    else:
-        #print ("{} not in {}, add to dictionary".format(md5_filename, md5_dir))
-        #with open (checkfilepath, "a") as md5_check:
-            #md5_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
-            #md5_check.writelines("{} not in {}, add to dictionary".format(md5_filename, md5_dir))
-        return False
-
-#put datetime.datetime.now() for every log entry
-
-def create_logfile(rf_path):
-
-    """create a log file in the specified directory called DATE.chk file"""
-
-    assert os.path.exist(rf_path), "runfolder path DO NOT exist"
-    
-    rf_path = os.path.abspath(rf_path)
-    assert os.path.isabs(rf_path), "runfolder path NOT absolute"
-
-    #assert (rf_path.startswith("/mnt/storage/data/NGS") or rf_path.startswith("/mnt/archive/data/NGS")), "runfolder given incorrect"
-
-    checkfile = str(datetime.datetime.now()).split(" ")[0] + ".chk"
-    checkfilepath = os.path.join(rf_path, checkfile)
-    checkfilepath = os.path.abspath(checkfilepath)
-    #print ("checkfilepath created")
-
-    if os.path.exists(checkfilepath):
-        print ('{} has already been checked today'.format(checkfilepath))
-
-    else:
-        createchk = "touch {}".format(checkfilepath)
-        subprocess.call(createchk, shell=True)
-        print ("check log {} generated".format(checkfilepath))
-
-    return checkfilepath
-
 def check_md5_format(checkfilepath, check_list):
+    
+    """check the file integrity of bam files in the runfolder using md5sum -c for all the bam associated .md5 files in the check_list"""
 
-    """check the format of md5 files in the check_list, if the format is correct, 
-    and there are no duplicates in the check_dict, add the md5 and its hash into check_dict.="""
+    assert os.path.exists(checkfilepath), "checkfile path DO NOT exist"
 
-    assert os.path.exist(checkfilepath), "checkfile path DO NOT exist"
-
-    rf_path = os.path.abspath(checkfilepath)
+    checkfilepath = os.path.abspath(checkfilepath)
     assert os.path.isabs(checkfilepath), "checkfile path NOT absolute"
 
     check_dict = {}
-    
+
     for md5 in check_list:
         #print (md5)
-        md5_dir = os.path.dirname(md5)
-        #print (md5_dir)
-        bam_filename = ".".join(md5.split("/")[-1].split(".")[:-1])
-        #print (bam_filename)
         md5_filename = md5.split("/")[-1]
         #print (md5_filename)
+        bam_filename = ".".join(md5.split("/")[-1].split(".")[:-1])
+        #print (bam_filename)
+
+        """check the format of md5 files in the check_list, if the format is correct, add the md5 and its hash into check_dict."""
+
         with open (md5) as md5_file:
             for line in md5_file:
                 fields = line.strip().split("  ")
+                checksum = fields[0]
                 bam = fields[1].split("/")[-1]
-                hash_match = check_md5_hash(checkfilepath, md5, fields[0])
-                filename_match = check_filename_match(checkfilepath, bam_filename, bam, md5)
-                filename_duplicate = check_filename_duplicate(checkfilepath, md5_filename, md5_dir, check_dict)
-                if hash_match and filename_match:
-                    if not filename_duplicate:
-                        check_dict[md5_filename] = fields[0]
-    
+                #print (bam)
+                if check_md5_hash(checkfilepath, md5, checksum) and check_filename_match(checkfilepath, bam_filename, bam, md5) and md5_filename not in check_dict:
+                    check_dict[md5_filename] = fields[0]
+
     return check_dict
 
-def check_md5(checkfilepath, check_list):
-    
-    """check the file integrity of bam files in the runfolder using md5sum -c for all the bam associated .md5 files in the check_list"""
-    
-    assert os.path.exist(checkfilepath), "checkfile path DO NOT exist"
+def check_md5filename(rf_path, md5_filename, check_dict):
 
-    rf_path = os.path.abspath(checkfilepath)
-    assert os.path.isabs(checkfilepath), "checkfile path NOT absolute"
+    """check if md5 file name is present in md5 check dictionary"""
 
-    for md5 in check_list:
-    #print (md5)
-
-        if md5.endswith(".md5"): 
-            with open (checkfilepath, 'a') as md5_check:
-                print ("{} file is being checked".format(md5))
-                md5_check.writelines("{} file is being checked\n".format(md5))
-                md5chk = "md5sum -c {} >> {} 2>> {}".format(md5, checkfilepath, checkfilepath)
-                #print md5chk
-                subprocess.call(md5chk, shell=True)
-                print ("{} checked".format(md5))
-
-    return checkfilepath
-
-def check_md5filenames_in_org(rf_path, md5_filename, check_dict):
-
-    """check if md5 file name is present in original runfolder"""
-
-    assert os.path.exist(rf_path), "runfolder path DO NOT exist"
-    
-    rf_path = os.path.abspath(rf_path)
-    assert os.path.isabs(rf_path), "runfolder path NOT absolute"
-
-    if md5_filename in check_dict["storage"]:
-        #print ("{} present in {}".format(md5_filename, "storage"))
-        with open (os.path.join(rf_path, "md5_match.txt"), "a") as filename_check:
-            filename_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
-            filename_check.writelines("{} present in {} \n".format(md5_filename, "storage"))
-            return True
+    if md5_filename in check_dict:
+        return True
     else:
-        print ("ERROR, {} not in {}".format(md5_filename, "storage"))
-        with open (os.path.join(rf_path, "md5_mismatch.txt"), "a") as filename_check:
-            filename_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
-            filename_check.writelines("ERROR, {} not in {} \n".format(md5_filename, "storage"))
-            return False
-
-def check_md5filenames_in_bkup(rf_path, md5_filename, check_dict):
-
-    """check if md5 file name is present in backup runfolder"""
-
-    assert os.path.exist(rf_path), "runfolder path DO NOT exist"
-    
-    rf_path = os.path.abspath(rf_path)
-    assert os.path.isabs(rf_path), "runfolder path NOT absolute"
-
-    if md5_filename in check_dict["archive"]:
-        #print ("{} present in {}".format(md5_filename, "archive"))
-        with open (os.path.join(rf_path, "md5_match.txt"), "a") as filename_check:
-            filename_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
-            filename_check.writelines("{} present in {} \n".format(md5_filename, "archive"))
-            return True
-    else:
-        print ("ERROR, {} not in {}".format(md5_filename, "archive"))
-        with open (os.path.join(rf_path, "md5_mismatch.txt"), "a") as filename_check:
-            filename_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
-            filename_check.writelines("ERROR, {} not in {} \n".format(md5_filename, "archive"))
-            return False
+        return False
 
 def compare_md5hash(rf_path, md5_filename, check_dict):
 
     """check if md5 hash match between original and backup runfolder"""
 
-    assert os.path.exist(rf_path), "runfolder path DO NOT exist"
-    
-    rf_path = os.path.abspath(rf_path)
-    assert os.path.isabs(rf_path), "runfolder path NOT absolute"
-
     original_hash = check_dict["storage"][md5_filename]
     backup_hash = check_dict["archive"][md5_filename]
 
     if backup_hash == original_hash:
-        print ("OK {}".format(md5_filename))
-        with open (os.path.join(rf_path, "md5_match.txt"), "a") as hash_check:
-            hash_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
-            hash_check.writelines("OK {} \n".format(md5_filename))
-            return True
-
+        return True
     else:
-        print ("ERROR, mismatch found, {} and {} in {} DO NOT match".format(backup_hash, original_hash, md5_filename))
-        with open (os.path.join(rf_path, "md5_mismatch.txt"), "a") as hash_check:
-            hash_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
-            hash_check.writelines("ERROR, mismatch found, {} and {} in {} DO NOT match\n".format(backup_hash, original_hash, md5_filename))
-            return False
+        return False
 
 def check_hash_exist(rf_path, md5_filename, check_dict):
 
     """check if md5 hash exist in original or backup runfolder"""
 
-    assert os.path.exist(rf_path), "runfolder path DO NOT exist"
-    
-    rf_path = os.path.abspath(rf_path)
-    assert os.path.isabs(rf_path), "runfolder path NOT absolute"
-
     if check_dict["archive"][md5_filename] in check_dict["storage"].values():
-        print ("{} hash in backup folder found in original folder".format(md5_filename))
-        with open (os.path.join(rf_path, "md5_match.txt"), "a") as filename_check:
-            filename_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
-            filename_check.writelines("{} hash in backup folder found in original folder\n".format(md5_filename))
-            return True
+        return True
     else:
-        print ("{} hash in backup folder NOT found in original folder".format(md5_filename))
-        with open (os.path.join(rf_path, "md5_mismatch.txt"), "a") as filename_check:
-            filename_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
-            filename_check.writelines("{} hash in backup folder NOT found in original folder\n".format(md5_filename))
-            return False
+        return False
 
     if check_dict["storage"][md5_filename] in check_dict["archive"].values():
         print ("{} hash in original folder found in backup folder".format(md5_filename))
@@ -385,8 +208,8 @@ def check_hash_exist(rf_path, md5_filename, check_dict):
 def create_check_dict(orgfilepath, bkupfilepath, org_check_list, bkup_check_list):
 
     """create check_dict that includes hash and md5 file names from both original and backup runfolders"""
-    assert os.path.exist(orgfilepath), "original checkfile path DO NOT exist"
-    assert os.path.exist(bkupfilepath), "backup checkfile path DO NOT exist"
+    assert os.path.exists(orgfilepath), "original checkfile path DO NOT exist"
+    assert os.path.exists(bkupfilepath), "backup checkfile path DO NOT exist"
     
     orgfilepath = os.path.abspath(orgfilepath)
     assert os.path.isabs(orgfilepath), "original checkfile path NOT absolute"
@@ -394,15 +217,15 @@ def create_check_dict(orgfilepath, bkupfilepath, org_check_list, bkup_check_list
     assert os.path.isabs(bkupfilepath), "backup checkfile path NOT absolute"
 
     check_dict = {}
-    check_dict["storage"] = check_md5_format(orgfilepath, org_check_list)
-    check_dict["archive"] = check_md5_format(bkupfilepath, bkup_check_list)
+    check_dict["storage"] = check_md5(orgfilepath, org_check_list)
+    check_dict["archive"] = check_md5(bkupfilepath, bkup_check_list)
 
     return check_dict
 
 def check_org_bkup(org_rf_path, bkup_rf_path, org_bkup_check_dict):
 
-    assert os.path.exist(orf_rf_path), "original runfolder path DO NOT exist"
-    assert os.path.exist(bkup_rf_path), "backup runfolder path DO NOT exist"
+    assert os.path.exists(orf_rf_path), "original runfolder path DO NOT exist"
+    assert os.path.exists(bkup_rf_path), "backup runfolder path DO NOT exist"
     org_rf_path = os.path.abspath(org_rf_path)
     assert os.path.isabs(org_rf_path), "original runfolder path NOT absolute"
     bkup_rf_path = os.path.abspath(bkup_rf_path)
@@ -427,52 +250,105 @@ def check_org_bkup(org_rf_path, bkup_rf_path, org_bkup_check_dict):
     md5_in_bkup_not_org["hash match"] = {} # nested dictionary of all md5 filenames in backup runfolder but NOT original with matching hash in original
     md5_in_bkup_not_org["no hash match"] = {} # nested dictionary of all md5 filenames in backup runfolder but NOT original with matching in original
 
+    print ("BACKUP vs ORIGINAL")
+
     for md5_filename in org_bkup_check_dict["archive"]:
 
         #comment on what each statement checks
 
-        print ("{} in backup runfolder being compared".format(md5_filename))
+        original_hash = check_dict["storage"][md5_filename]
+        backup_hash = check_dict["archive"][md5_filename]
+
         with open (os.path.join(bkup_rf_path, "org_bkup_check.txt"), "a") as org_bkup_check:
             org_bkup_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
-            org_bkup_check.writelines("{} in backup runfolder being compared\n".format(md5_filename))
+            org_bkup_check.writelines("{} being checked\n".format(md5_filename))
         
         # if md5 filename present in backup and original, and md5 hash of both files match, add this to the md5_matches dictionary
-        if check_md5filenames_in_org(bkup_rf_path, md5_filename, org_bkup_check_dict) and compare_md5hash(bkup_rf_path, md5_filename, org_bkup_check_dict):
+        if check_md5filename(bkup_rf_path, md5_filename, org_bkup_check_dict["storage"]) and compare_md5hash(bkup_rf_path, md5_filename, org_bkup_check_dict):
             
+            print ("{} present in {}".format(md5_filename, "original runfolder"))
+            with open (os.path.join(bkup_rf_path, "org_bkup_check.txt"), "a") as filename_check:
+                filename_check.writelines("{} present {} \n".format(md5_filename), "original runfolder")
+
+            print ("OK {} has matching hash".format(md5_filename))
+            with open (os.path.join(bkup_rf_path, "org_bkup_check.txt"), "a") as hash_check:
+                hash_check.writelines("OK {} has matching hash \n".format(md5_filename))
+
             md5_matches["backup"][md5_filename] = org_bkup_check_dict["archive"][md5_filename]
             md5_matches["original"][md5_filename] = org_bkup_check_dict["storage"][md5_filename]
-        
+       
         # if md5 filename present in backup and original, but md5 hash do not match, add this to the md5_mismatches dictionary
-        elif check_md5filenames_in_org(bkup_rf_path, md5_filename, org_bkup_check_dict) and compare_md5hash(bkup_rf_path, md5_filename, org_bkup_check_dict) is False:
+        elif check_md5filename(bkup_rf_path, md5_filename, org_bkup_check_dict["storage"]) and compare_md5hash(bkup_rf_path, md5_filename, org_bkup_check_dict) is False:
             
+            print ("{} present in {}".format(md5_filename, "original runfolder"))
+            with open (os.path.join(bkup_rf_path, "org_bkup_check.txt"), "a") as filename_check:
+                filename_check.writelines("{} present {} \n".format(md5_filename), "original runfolder")
+            
+            print ("ERROR, {} and {} in {} DO NOT match".format(backup_hash, original_hash, md5_filename))
+            with open (os.path.join(bkup_rf_path, "org_bkup_check.txt"), "a") as hash_check:
+                hash_check.writelines("ERROR, {} and {} in {} DO NOT match\n".format(backup_hash, original_hash, md5_filename))
+
             md5_mismatches["backup"][md5_filename] = org_bkup_check_dict["archive"][md5_filename]
             md5_mismatches["original"][md5_filename] = org_bkup_check_dict["storage"][md5_filename]
         
         # if md5 filename present in backup, NOT in original, and hash of the file is present in backup, add this to md5_in_bkup_no_org["hash match"] dictionary
-        elif check_md5filenames_in_org(bkup_rf_path, md5_filename, org_bkup_check_dict) is False and check_hash_exist(bkup_path, md5_filename, org_bkup_check_dict):
+        elif check_md5filename(bkup_rf_path, md5_filename, org_bkup_check_dict["storage"]) is False and check_hash_exist(bkup_path, md5_filename, org_bkup_check_dict):
             
+            print ("ERROR, {} not present in {}".format(md5_filename, "original runfolder"))
+            with open (os.path.join(bkup_rf_path, "org_bkup_check.txt"), "a") as filename_check:
+                filename_check.writelines("ERROR, {} not in {}\n".format(md5_filename, "original runfolder"))
+
+            print ("{} hash in backup folder found in original folder".format(md5_filename))
+            with open (os.path.join(bkup_rf_path, "org_bkup_check.txt"), "a") as filename_check:
+                filename_check.writelines("{} hash in backup folder found in original folder\n".format(md5_filename))
+
             md5_in_bkup_not_org["hash match"][md5_filename] = org_bkup_check_dict["archive"][md5_filename]
         
         # if md5 filename present in backup, NOT in original, and hash of the file is NOT present in backup, add this to md5_in_bkup_no_org["no hash match"] dictionary
-        elif check_md5filenames_in_org(bkup_rf_path, md5_filename, org_bkup_check_dict) is False and check_hash_exist(bkup_path, md5_filename, org_bkup_check_dict) is False:
+        elif check_md5filename(bkup_rf_path, md5_filename, org_bkup_check_dict["storage"]) is False and check_hash_exist(bkup_path, md5_filename, org_bkup_check_dict) is False:
             
+            print ("ERROR, {} not present in {}".format(md5_filename, "original runfolder"))
+            with open (os.path.join(rf_path, "org_bkup_check.txt"), "a") as filename_check:
+                filename_check.writelines("ERROR, {} not in {}\n".format(md5_filename, "original runfolder"))
+
+            print ("{} hash in backup folder NOT found in original folder".format(md5_filename))
+            with open (os.path.join(bkup_rf_path, "org_bkup_check.txt"), "a") as filename_check:
+                filename_check.writelines("{} hash in backup folder NOT found in original folder\n".format(md5_filename))
+
             md5_in_bkup_not_org["no hash match"][md5_filename] = org_bkup_check_dict["archive"][md5_filename]
+
+    print ("ORIGINAL vs BACKUP")
 
     for md5_filename in org_bkup_check_dict["storage"]:
 
-        print ("{} in original runfolder being compared".format(md5_filename))
         with open (os.path.join(org_rf_path, "org_bkup_check.txt"), "a") as org_bkup_check:
             org_bkup_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
-            org_bkup_check.writelines("{} in original runfolder being compared\n".format(md5_filename))
+            org_bkup_check.writelines("{} being checked\n".format(md5_filename))
 
         # if md5 filename present in backup, NOT in original, and hash of the file is present in backup, add this to md5_in_bkup_no_org["hash match"] dictionary
-        if check_md5filenames_in_bkup(org_rf_path, md5_filename, org_bkup_check_dict) is False and check_hash_exist(org_path, md5_filename, org_bkup_check_dict):
+        if check_md5filename(org_rf_path, md5_filename, org_bkup_check_dict["archive"]) is False and check_hash_exist(org_path, md5_filename, org_bkup_check_dict):
+
+            print ("ERROR, {} not present in {}".format(md5_filename, "backup runfolder"))
+            with open (os.path.join(org_rf_path, "org_bkup_check.txt"), "a") as filename_check:
+                filename_check.writelines("ERROR, {} not in {}\n".format(md5_filename, "backup runfolder"))
+
+            print ("{} hash in backup folder found in original folder".format(md5_filename))
+            with open (os.path.join(org_rf_path, "org_bkup_check.txt"), "a") as filename_check:
+                filename_check.writelines("{} hash in backup folder found in original folder\n".format(md5_filename))
 
             md5_in_org_not_bkup["hash match"][md5_filename] = org_bkup_check_dict["storage"][md5_filename]
         
         # if md5 filename present in backup, NOT in original, and hash of the file is NOT present in backup, add this to md5_in_bkup_no_org["no hash match"] dictionary
-        elif check_md5filenames_in_bkup(org_rf_path, md5_filename, org_bkup_check_dict) is False and check_hash_exist(org_path, md5_filename, org_bkup_check_dict) is False:
+        elif check_md5filename(org_rf_path, md5_filename, org_bkup_check_dict["archive"]) is False and check_hash_exist(org_path, md5_filename, org_bkup_check_dict) is False:
             
+            print ("ERROR, {} not present in {}".format(md5_filename, "backup runfolder"))
+            with open (os.path.join(org_rf_path, "org_bkup_check.txt"), "a") as filename_check:
+                filename_check.writelines("ERROR, {} not in {}\n".format(md5_filename, "backup runfolder"))            
+
+            print ("{} hash in backup folder NOT found in original folder".format(md5_filename))
+            with open (os.path.join(org_rf_path, "org_bkup_check.txt"), "a") as filename_check:
+                filename_check.writelines("{} hash in backup folder NOT found in original folder\n".format(md5_filename))
+
             md5_in_org_not_bkup["no hash match"][md5_filename] = org_bkup_check_dict["storage"][md5_filename]
 
     if md5_mismatches["original"] or md5_mismatches["backup"]:
