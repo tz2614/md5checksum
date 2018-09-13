@@ -1,0 +1,20 @@
+time taken to check bam file integrity in /mnt/storage/home/zhengt/projects/md5checksum/testrunfolders/backup/180725/runfolder1
+ and /mnt/storage/home/zhengt/projects/md5checksum/testrunfolders/original/runfolder1: 0.146900177002 
+time taken to check bam file integrity in /mnt/storage/home/zhengt/projects/md5checksum/testrunfolders/original/runfolder1
+ and /mnt/storage/home/zhengt/projects/md5checksum/testrunfolders/backup/180725/runfolder1: 0.216587781906 
+time taken to check bam file integrity in /mnt/storage/home/zhengt/projects/md5checksum/testrunfolders/original/runfolder2
+ and /mnt/storage/home/zhengt/projects/md5checksum/testrunfolders/backup/180725/runfolder2: 0.134690999985 
+time taken to check bam file integrity in /mnt/storage/home/zhengt/projects/md5checksum/testrunfolders/original/runfolder3
+ and /mnt/storage/home/zhengt/projects/md5checksum/testrunfolders/backup/180725/runfolder3: 3.85377192497 
+time taken to check bam file integrity in /mnt/storage/home/zhengt/projects/md5checksum/testrunfolders/original/runfolder2
+ and /mnt/storage/home/zhengt/projects/md5checksum/testrunfolders/backup/180725/runfolder2: 4.14966893196 
+time taken to check bam file integrity in /mnt/storage/home/zhengt/projects/md5checksum/testrunfolders/original/runfolder2
+ and /mnt/storage/home/zhengt/projects/md5checksum/testrunfolders/backup/180725/runfolder2: 1.23496413231 
+time taken to check bam file integrity in /mnt/storage/home/zhengt/projects/md5checksum/testrunfolders/original/runfolder1
+ and /mnt/storage/home/zhengt/projects/md5checksum/testrunfolders/backup/180725/runfolder2: 0.279588937759 
+time taken to check bam file integrity in /mnt/storage/home/zhengt/projects/md5checksum/testrunfolders/original/runfolder1
+ and /mnt/storage/home/zhengt/projects/md5checksum/testrunfolders/backup/180725/runfolder1: 1.75577998161 
+time taken to check bam file integrity in /mnt/storage/home/zhengt/projects/md5checksum/testrunfolders/original/runfolder2
+ and /mnt/storage/home/zhengt/projects/md5checksum/testrunfolders/backup/180725/runfolder2: 1.78453493118 
+time taken to check bam file integrity in /mnt/storage/home/zhengt/projects/md5checksum/testrunfolders/original/runfolder3
+ and /mnt/storage/home/zhengt/projects/md5checksum/testrunfolders/backup/180725/runfolder3: 1.25254511833 
