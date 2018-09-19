@@ -125,11 +125,11 @@ def create_md5(create_list, rf_path):
             createmd5 = "cd {}; md5sum {} > {}".format(rf_path, bam, md5)
             print ("creating a new md5 file: {}".format(md5))
             subprocess.call(createmd5, shell=True)
-            print ("new md5 file {} generated".format(md5))
+            print ("new md5 file {} generated".format(md5file))
             new_md5_list.append(md5file)
             with open (os.path.join(rf_path, "md5_missing.txt"), 'a') as new_md5:
                 new_md5.writelines("time of generation: {}\n".format(datetime.datetime.now()))
-                new_md5.writelines('new md5 file {} generated\n'.format(md5))
+                new_md5.writelines('new md5 file {} generated\n'.format(md5file))
 
     print "list of new md5s generated: {}".format(new_md5_list)
     return new_md5_list
