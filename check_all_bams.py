@@ -9,45 +9,45 @@ import timeit
 
 """check all bam files integrity in the current NGS runfolders and backup NGS runfolders"""
 
-def check_NGS_bam_md5(runfolders, wkdir)
+def check_NGS_bam_md5(runfolders, rf_path)
     
     #identify all bams and md5s in the NGS folders
     
     #generate a nested dictionary containing runfolder, bam and md5 files in the NGS folders. 
-    bam_md5_dict = check_bam_md5_runfolders.create_bam_md5_dict(runfolders, wkdir)
+    bam_md5_dict = check_bam_md5_runfolders.create_bam_md5_dict(runfolders, rf_path)
     
     #use the generated dictionary above, create a list of all bams without md5, a list of md5 with bam, and a list of md5 without bam
-    bam_without_md5, md5_with_bam, md5_without_bam = create_bam_md5_lists.create_bam_md5_lists(bam_md5_dict, wkdir)
+    bam_without_md5, md5_with_bam, md5_without_bam = create_bam_md5_lists.create_bam_md5_lists(bam_md5_dict, rf_path)
     
     #create the check and error log files
-    checkfilepath, errorfilepath = md5sumscript_5.create_logfiles(wkdir)
+    checkfilepath, errorfilepath = md5sumscript.create_logfiles(rf_path)
 
     #check all the md5s in both md5_with_bam and md5_without_bam
     md5_list = md5_with_bam + md5_without_bam
-    md5sumscript_5.check_md5(wkdir,checkfilepath, errorfilepath, md5_list)
+    md5sumscript.check_md5(rf_path,checkfilepath, errorfilepath, md5_list)
 
     #generate .md5 for bams without .md5
-    md5sumscript_5.create_md5(bam_without_md5, wkdir)
+    md5sumscript.create_md5(bam_without_md5, rf_path)
     
     return md5_list
 
-def main(original, backup, wkdir):
+def main(original, backup, rf_path):
     
     #start timer
     start = timeit.default_timer()
 
     #indicate where the check logs and error logs for the check will be stored"
-    wkdir = os.path.abspath(wkdir)
-    print ("directory where check log files will be stored:", wkdir)
+    rf_path = os.path.abspath(rf_path)
+    print ("directory where check log files will be stored:", rf_path)
 
     #check the create_list of bam files to see if .md5 files for each bam file is present, if not generate it.
     create_md5(org_create_list, org_rf_path)
     create_md5(bkup_create_list, bkup_rf_path)
 
     #execute function to check all bams and md5s in original and backup NGS runfolders
-    check_list_original = check_NGS_bam_md5(original, wkdir)
-    check_list_backup = check_NGS_bam_md5(backup, wkdir)
-    check_bam_md5_runfolders.check_org_bkup(wkdir, check_list_original, check_list_backup)
+    check_list_original = check_NGS_bam_md5(original, rf_path)
+    check_list_backup = check_NGS_bam_md5(backup, rf_path)
+    md5sumscript.check_org_bkup(rf_path, check_list_original, check_list_backup)
 
     print ("check all bam and md5 files in NGS runfolders complete")
 

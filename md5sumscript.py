@@ -246,7 +246,8 @@ def check_md5(checkfilepath, check_list):
                     bam = bam_filename + "not found in md5"
                     checksum = str(fields)[:32]
                     check_md5_hash(checkfilepath, md5, checksum)
-                    check_filename(checkfilepath, bam_filename, bam, md5)
+                    with open (os.path.join(rf_path, "md5_missing.txt"), "a") as md5_check:
+                        md5_check.writelines("{} filename not present in {}".format(bam_filename, md5_filename))
                     print ("{} checked\n".format(md5_filename))
 
                 check_dict[md5_filename] = checksum
@@ -357,16 +358,18 @@ def check_org_bkup(org_rf_path, bkup_rf_path, org_bkup_check_dict):
     # nested dictionary of all md5 filenames in backup runfolder but NOT original with NO matching hash in original
     md5_in_bkup_not_org["no hash match"] = {} 
 
-    print ("BACKUP vs ORIGINAL")
+    print ("BACKUP vs ORIGINAL\n")
 
     for md5_filename in org_bkup_check_dict["archive"]:
 
         if md5_filename in org_bkup_check_dict["storage"]:
-            backup_hash = org_bkup_check_dict["archive"][md5_filename]
-        if md5_filename in org_bkup_check_dict["archive"]:
             original_hash = org_bkup_check_dict["storage"][md5_filename]
+            backup_hash = org_bkup_check_dict["archive"][md5_filename]
+        else:
+            backup_hash = org_bkup_check_dict["archive"][md5_filename]
+            original_hash = "NONE"
         
-        print ("{} being checked\n".format(md5_filename))
+        print ("{} being checked".format(md5_filename))
         with open (os.path.join(bkup_rf_path, "org_bkup_check.txt"), "a") as org_bkup_check:
             org_bkup_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
             org_bkup_check.writelines("{} being checked\n".format(md5_filename))
@@ -427,7 +430,14 @@ def check_org_bkup(org_rf_path, bkup_rf_path, org_bkup_check_dict):
 
     for md5_filename in org_bkup_check_dict["storage"]:
 
-        print ("{} being checked\n".format(md5_filename))
+        if md5_filename in org_bkup_check_dict["archive"]:
+            original_hash = org_bkup_check_dict["storage"][md5_filename]
+            backup_hash = org_bkup_check_dict["archive"][md5_filename]
+        else:
+            original_hash = org_bkup_check_dict["original"][md5_filename]
+            backup_hash = "NONE"
+
+        print ("{} being checked".format(md5_filename))
         with open (os.path.join(org_rf_path, "org_bkup_check.txt"), "a") as org_bkup_check:
             org_bkup_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
             org_bkup_check.writelines("{} being checked\n".format(md5_filename))
@@ -536,12 +546,15 @@ def main(org_rf_path, bkup_rf_path):
 
     #create a dictionary containing the md5 filenames and its associated md5 hash
     org_bkup_check_dict = {}
-    org_bkup_check_dict = create_check_dict(org_checkfilepath, bkup_checkfilepath, org_check_list, bkup_check_list, org_bkup_check_dict)
-    #pp.pprint(org_bkup_check_dict)
-    org_bkup_check_dict = create_check_dict(org_checkfilepath, bkup_checkfilepath, new_md5_list_in_org, new_md5_list_in_bkup, org_bkup_check_dict)
-    pp.pprint(org_bkup_check_dict)
-    #check md5sum values and bam filenames within .md5 match between original and backup runfolder
-    check_org_bkup(org_rf_path, bkup_rf_path, org_bkup_check_dict)
+    org_bkup_check_dict1 = create_check_dict(org_checkfilepath, bkup_checkfilepath, org_check_list, bkup_check_list, org_bkup_check_dict)
+    org_bkup_check_dict2 = create_check_dict(org_checkfilepath, bkup_checkfilepath, new_md5_list_in_org, new_md5_list_in_bkup, org_bkup_check_dict)
+    pp.pprint(org_bkup_check_dict1, "\n")
+
+    #check md5sum values and bam filenames within .md5 match between original and backup runfolder for the existing md5s in org_check_dict1 and new md5s in org_check_dict2
+    check_org_bkup(org_rf_path, bkup_rf_path, org_bkup_check_dict1)
+    print ()
+    check_org_bkup(org_rf_path, bkup_rf_path, org_bkup_check_dict2)
+    print ()
 
     #end timer
     end = timeit.default_timer()

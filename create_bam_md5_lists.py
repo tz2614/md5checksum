@@ -49,9 +49,9 @@ def create_bam_md5_dict(runfolders, wkdir):
         bam_md5_dict[runfolder]["md5"] = new_md5_list
         bam_md5_dict[runfolder]["bam"] = new_bam_list
 
-        return bam_md5_dict
+        return bam_md5_dict, runfolder_list
 
-def create_bam_md5_lists(bam_md5_dict, wkdir):
+def create_bam_md5_lists(runfolder_list, bam_md5_dict, wkdir):
 
     bam_without_md5_list = []
     md5_with_bam_list = []
@@ -110,8 +110,8 @@ def main(runfolders, wkdir):
     wkdir = os.path.abspath(wkdir)
     print ("directory where the list of bams/md5 is stored: ", wkdir)
     #execute function to find a list of bam files missing md5, a list of md5 with associated bam, and a list of md5 without associated bam
-    bam_md5_dict = create_bam_md5_dict(runfolders, wkdir)
-    create_bam_md5_lists(bam_md5_dict, wkdir)
+    bam_md5_dict, runfolder_list = create_bam_md5_dict(runfolders, wkdir)
+    create_bam_md5_lists(runfolder_list, bam_md5_dict, wkdir)
     print ("all bam files checked for associated md5 file")
 
     #end timer
