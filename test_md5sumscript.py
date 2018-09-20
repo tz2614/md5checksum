@@ -7,6 +7,7 @@ import glob
 import os
 import shutil
 import subprocess
+import pprint as pp
 
 # directories containing test datasets for the md5checksum program
 org_rf_path1 = "/mnt/storage/home/zhengt/projects/md5checksum/testrunfolders/original/runfolder1"
@@ -149,7 +150,7 @@ def scenario_3_fixture():
 	shutil.copyfile(org_md5_3, new_org_md5_3)
 
 	bkup_bam_3 = os.path.join(bkup_rf_path1, bam_name3)
-	bkup_md5_3 = os.path.join(org_bam_3 + ".md5")
+	bkup_md5_3 = os.path.join(bkup_bam_3 + ".md5")
 	new_bkup_bam_3 = os.path.join(new_bkup_rf_path_3, bam_name3)
 	new_bkup_md5_3 = os.path.join(new_bkup_bam_3 + ".md5")
 
@@ -351,7 +352,7 @@ def scenario_8_fixture():
 	new_org_md5_8 = os.path.join(new_org_bam_8 + ".md5")
 
 	shutil.copyfile(org_bam_8, new_org_bam_8)
-	shutil.copyfile(new_org_bam_8, new_org_md5_8)
+	shutil.copyfile(org_md5_8, new_org_md5_8)
 
 	bkup_bam_8 = os.path.join(bkup_rf_path3, bam_name5)
 	bkup_md5_8 = os.path.join(bkup_bam_8 + ".md5")
@@ -572,8 +573,10 @@ def test_check_md5_hash(scenario_3_fixture):
 
 	with open (new_org_md5_3, "r") as org_md5_file:
 		org_checksum_3 = org_md5_file.readline().strip().split("  ")[0]
+		print (org_checksum_3)
 	with open (new_bkup_md5_3, "r") as bkup_md5_file:
 		bkup_checksum_3 = bkup_md5_file.readline().strip().split("  ")[0]
+		print (bkup_checksum_3)
 
 	# check the hash using check_md5_hash function
 		
@@ -601,7 +604,7 @@ def test_check_md5_hash(scenario_3_fixture):
 		if char.isalnum():
 			bkup_chars_3 += char
 
-	assert bkup_chars_3 == bkup_checksum_3, "characters in checksum in correct format"
+	assert not bkup_chars_3 == bkup_checksum_3, "characters in checksum in correct format"
 
 	if bkup_hash_check_3 is True:
 		print ("check_md5_hash function (alphanumeric) NOT working for {}".format(new_bkup_md5_3))
@@ -630,9 +633,9 @@ def test_check_md5_hash(scenario_3_fixture):
 	else:
 		print ("check_md5_hash function (length) working normally")
 
-	assert bkup_len_3 == 32, "length of md5 hash incorrect for {}".format(new_bkup_md5_3)
+	assert bkup_len_3 != 32, "length of md5 hash correct for {}".format(new_bkup_md5_3)
 
-	if bkup_hash_check_3 is False:
+	if bkup_hash_check_3 is True:
 		print ("check_md5_hash function (length) NOT working for {}".format(new_bkup_md5_3))
 	else:
 		print ("check_md5_hash function (length) working normally, wrong length detected")
@@ -911,8 +914,7 @@ def test_create_check_dict(scenario_9_fixture):
 	check_dict_9 = md5sumscript.create_check_dict(org_checkfilepath_9, bkup_checkfilepath_9, new_org_md5_list_9, new_bkup_md5_list_9, check_dict_9)
 
 	# negative control (e.g. no key value pair should be present)
-	assert check_dict_9["storage"] == {}, "key value pair wrongly present in storage dictionary"
-	assert check_dict_9["archive"] == {}, "key value pair wrongly present in archive dictionary"
+	assert check_dict_9 == {}, "key value pair wrongly present in dictionary"
 
 	#positive control
 
@@ -947,6 +949,7 @@ def test_check_filename(scenario_7_fixture):
 	# md5_filename should be in check_dict["storage"], but not check_dict["archive"]
 
 	assert md5sumscript.check_md5filename(new_org_rf_path_7, md5_filename, check_dict_7["storage"]), "md5 NOT in storage, check create_check_dict function"
+	check_dict_7["archive"] = {}
 	assert not md5sumscript.check_md5filename(new_bkup_rf_path_7, md5_filename, check_dict_7["archive"]), "md5 in archive check create_check_dict function"
 
 @pytest.mark.usefixtures("scenario_6_fixture", "scenario_4_fixture")
@@ -1052,7 +1055,7 @@ def test_check_org_bkup(scenario_1_fixture, scenario_2_fixture, scenario_6_fixtu
 	new_org_rf_path_1, new_bkup_rf_path_1, new_org_bam_1, new_org_md5_1, new_bkup_bam_1, new_bkup_md5_1 = scenario_1_fixture
 	new_org_rf_path_2, new_bkup_rf_path_2, new_org_bam_2, new_org_md5_2, new_bkup_bam_2, new_bkup_md5_2 = scenario_2_fixture
 	new_org_rf_path_6, new_bkup_rf_path_6, new_org_bam_6, new_org_md5_6, new_bkup_bam_6, new_bkup_md5_6 = scenario_6_fixture
-	new_org_rf_path_8, new_bkup_rf_path_8, new_org_bam_8, new_bkup_bam_8, new_org_md5_8, new_bkup_md5_8 = scenario_8_fixture
+	new_org_rf_path_8, new_bkup_rf_path_8, new_org_bam_8, new_org_md5_8, new_bkup_bam_8, new_bkup_md5_8 = scenario_8_fixture
 
 	new_org_bam_list_1, new_org_md5_list_1 = md5sumscript.create_two_lists(new_org_rf_path_1)
 	new_bkup_bam_list_1, new_bkup_md5_list_1 = md5sumscript.create_two_lists(new_bkup_rf_path_1)
