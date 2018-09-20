@@ -8,7 +8,7 @@ import datetime
 import subprocess
 import pprint as pp
 
-def create_bam_md5_dict(runfolders, wkdir):
+def create_bam_md5_dict(runfolders):
 
     #identify all bam and md5 files in the gemini folder
     
@@ -110,7 +110,7 @@ def main(runfolders, wkdir):
     wkdir = os.path.abspath(wkdir)
     print ("directory where the list of bams/md5 is stored: ", wkdir)
     #execute function to find a list of bam files missing md5, a list of md5 with associated bam, and a list of md5 without associated bam
-    bam_md5_dict, runfolder_list = create_bam_md5_dict(runfolders, wkdir)
+    bam_md5_dict, runfolder_list = create_bam_md5_dict(runfolders)
     create_bam_md5_lists(runfolder_list, bam_md5_dict, wkdir)
     print ("all bam files checked for associated md5 file")
 
