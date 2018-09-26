@@ -15,11 +15,11 @@ The test bam files are available upon request by email @ tengyue.zheng@addenbroo
 
 ## Instructions:
 
-- Before running the program, please read the following instructions:
+Before running the program, please read the following instructions:
 
-1. Navigate to your working directory and create an empty folder called "bam_check". 
+1.Navigate to your working directory and create an empty folder called "bam_check". 
 
-2. If possible create a virtual environment, so that you can control the library package available for use. To run the script without testing, standalone python 2.7.5 should be sufficient. The program have not been tested in python 3, but if you wish to, feel free to change the print statements in yours scripts after you have cloned the repository in your local workng directory to test the script in python 3 and above.
+2.If possible create a virtual environment, so that you can control the library package available for use. To run the script without testing, standalone python 2.7.5 should be sufficient. The program have not been tested in python 3, but if you wish to, feel free to change the print statements in yours scripts after you have cloned the repository in your local workng directory to test the script in python 3 and above.
 
 a) check you have virtualenv installed
 ```Bash
@@ -53,7 +53,7 @@ $ git --version
 git version 1.8.3.1
 ```
 
-2. First, clone the repository using git
+3.Clone the repository using git
 ```Bash
 git clone https://github.com/tz2614/md5checksum
 or 
@@ -65,13 +65,13 @@ git clone https://git.ctrulab.uk/zhengt/md5checksum
 - If you know where you bam files are located, then try to use the full path to the directory if possible.
 - If you only have one runfolder, then I would suggest running md5sumscript_for1runfolder.py located in the /miscellaneous directory instead.
 
-3. Navigate to the directory md5checksum/ and execute the program for two runfolders, e.g. named "runfolder1" and "runfolder2" here for demonstration purposes, type the following on command line
+4.Navigate to the directory md5checksum/ and execute the program for two runfolders, e.g. named "runfolder1" and "runfolder2" here for demonstration purposes, type the following on command line
 
 ```Bash
 $python md5sumscript.py runfolder1 runfolder2
 ```
 
-4.The outputs should look like this
+5.The outputs should look like this
 
 ```Bash
 1>runfolder1/bamfile1.bam.md5 present
