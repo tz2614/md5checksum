@@ -19,7 +19,7 @@ The test bam files are available upon request by email @ tengyue.zheng@addenbroo
 
 1. Navigate to your working directory and create an empty folder called "bam_check". 
 
-2. If popssible create a virutal environment, so that you can control the library package available for use. To run the script without testing, standalone python 2.7.5 should be sufficient. The program have not been tested in python 3, but if you wish to, eel free to change the print statements in yours scripts after you have cloned the repository in your local workng directory to test the script in python3.
+2. If possible create a virtual environment, so that you can control the library package available for use. To run the script without testing, standalone python 2.7.5 should be sufficient. The program have not been tested in python 3, but if you wish to, feel free to change the print statements in yours scripts after you have cloned the repository in your local workng directory to test the script in python 3 and above.
 
 a) check you have virtualenv installed
 ```Bash
@@ -42,7 +42,7 @@ $virtualenv bam_check
 $virtualenv -p /usr/bin/python bam_check
 ```
 
-c) activate the environment
+c) activate the virtual environment
 ```Bash
 $ source bam_check/bin/activate
 ```
@@ -63,9 +63,9 @@ git clone https://git.ctrulab.uk/zhengt/md5checksum
 - This should create directory called "md5checksum" in your bam_check directory.
 - check to make sure the main script called "md5sumscript.py" is present
 - If you know where you bam files are located, then try to use the full path to the directory if possible.
-- If you only have one runfolder, then I would suggest running md5sumscript_for1runfolder.py instead.
+- If you only have one runfolder, then I would suggest running md5sumscript_for1runfolder.py located in the /miscellaneous directory instead.
 
-3. Navigate to the runfolder md5checksum and execute the program for two runfolders, e.g. named "runfolder1" and "runfolder2" here for demonstration purposes, type following on command line
+3. Navigate to the directory md5checksum/ and execute the program for two runfolders, e.g. named "runfolder1" and "runfolder2" here for demonstration purposes, type the following on command line
 
 ```Bash
 $python md5sumscript.py runfolder1 runfolder2
@@ -159,9 +159,9 @@ $python md5sumscript.py runfolder1 runfolder2
 
 - From line 1 to 7, the output shows which md5 files are present, which md5 files are missing, and which md5 files have been generated.
 
-- From line 8 to 11, the output shows the log files in the form of YYYY-DD-MM.chk that have beend generated ready to receive logs from the md5 check
+- From line 8 to 11, the output shows the log files in the form of YYYY-DD-MM.chk that have been generated ready to receive logs from the check_md5() function
 
-- From line 12 to 21, the output shows the md5 checking process taking place, the md5 hash format (length=32 + alphanumeric), and the bam filenames associated with each md5 are checked to see if they match. Note that md5sum program is invoked to generate the md5 checksum for the bam file associated with the md5 before checking it against the existing one. 
+- From line 12 to 21, the output shows the md5 checking process taking place, the md5 hash format (length=32 + alphanumeric), and the bam filenames associated with each md5 are checked to see if they match. Note that md5sum program is invoked to generate the checksum for the bam file associated with the md5 before checking it against the existing one in the bam.md5. 
 
 - From line 22 to 23, the md5 filenames and associated hash are added to a dictionary and displayed on the terminal
 

@@ -25,7 +25,7 @@ bam_name4 = "sample11.bam"
 bam_name5 = "sample12.bam"
 bam_name6 = "sample13.bam"
 
-#declare current directory
+# declare current directory
 current_directory = os.getcwd()
 
 # new directories to be created for each scenario
