@@ -723,19 +723,19 @@ def test_check_filename(scenario_1_fixture, scenario_2_fixture, scenario_3_fixtu
 
 	# for scenarios 4, the bam filenames prefix should match that which is next to the hash in the file.
 	
-	assert check_filename(org_checkfilepath_4, org_md5_filename_4, org_bam_in_md5_4, new_org_md5_4), "check_filename function NOT working"
-	assert check_filename(bkup_checkfilepath_4, bkup_md5_filename_4, bkup_bam_in_md5_4, new_bkup_md5_4), "check_filename function NOT working"
+	assert check_filename(org_checkfilepath_4, org_bam_filename_4, org_bam_in_md5_4, new_org_md5_4), "check_filename function NOT working"
+	assert check_filename(bkup_checkfilepath_4, bkup_bam_filename_4, bkup_bam_in_md5_4, new_bkup_md5_4), "check_filename function NOT working"
 
 	# for scenarios 1, 2, 3 and 5, the bam filenames prefix should NOT match that which is in the file.
 
-	assert not check_filename(org_checkfilepath_1, org_md5_filename_1, org_bam_in_md5_1, new_org_md5_1), "check_filename function NOT working"
-	assert not check_filename(bkup_checkfilepath_1, bkup_md5_filename_1, bkup_bam_in_md5_1, new_bkup_md5_1), "check_filename function NOT working"
-	assert not check_filename(org_checkfilepath_2, org_md5_filename_2, org_bam_in_md5_2, new_org_md5_2), "check_filename function NOT working"
-	assert not check_filename(bkup_checkfilepath_2, bkup_md5_filename_2, bkup_bam_in_md5_2, new_bkup_md5_2), "check_filename function NOT working"
-	assert not check_filename(org_checkfilepath_3, org_md5_filename_3, org_bam_in_md5_3, new_org_md5_3), "check_filename function NOT working"
-	assert not check_filename(bkup_checkfilepath_3, bkup_md5_filename_3, bkup_bam_in_md5_3, new_bkup_md5_3), "check_filename function NOT working"
-	assert not check_filename(org_checkfilepath_5, org_md5_filename_5, org_bam_in_md5_5, new_org_md5_5), "check_filename function NOT working"
-	assert not check_filename(bkup_checkfilepath_5, bkup_md5_filename_5, bkup_bam_in_md5_5, new_bkup_md5_5), "check_filename function NOT working"
+	assert not check_filename(org_checkfilepath_1, org_bam_filename_1, org_bam_in_md5_1, new_org_md5_1), "check_filename function NOT working"
+	assert not check_filename(bkup_checkfilepath_1, bkup_bam_filename_1, bkup_bam_in_md5_1, new_bkup_md5_1), "check_filename function NOT working"
+	assert not check_filename(org_checkfilepath_2, org_bam_filename_2, org_bam_in_md5_2, new_org_md5_2), "check_filename function NOT working"
+	assert not check_filename(bkup_checkfilepath_2, bkup_bam_filename_2, bkup_bam_in_md5_2, new_bkup_md5_2), "check_filename function NOT working"
+	assert not check_filename(org_checkfilepath_3, org_bam_filename_3, org_bam_in_md5_3, new_org_md5_3), "check_filename function NOT working"
+	assert not check_filename(bkup_checkfilepath_3, bkup_bam_filename_3, bkup_bam_in_md5_3, new_bkup_md5_3), "check_filename function NOT working"
+	assert not check_filename(org_checkfilepath_5, org_bam_filename_5, org_bam_in_md5_5, new_org_md5_5), "check_filename function NOT working"
+	assert not check_filename(bkup_checkfilepath_5, bkup_bam_filename_5, bkup_bam_in_md5_5, new_bkup_md5_5), "check_filename function NOT working"
 
 	# the .chk file records the matches and mismatches in terms of filename, hence this test to see if the filename that matches have been recorded correctly
 
@@ -814,11 +814,11 @@ def test_check_md5(scenario_1_fixture, scenario_4_fixture, scenario_7_fixture):
 	new_bkup_bam_list_4, new_bkup_md5_list_4 = md5sumscript.create_two_lists(new_bkup_rf_path_4)
 	new_org_bam_list_7, new_org_md5_list_7 = md5sumscript.create_two_lists(new_org_rf_path_7)
 
-	org_check_dict_1 = md5sumscript.check_md5(org_checkfilepath_1, new_org_md5_list_1)
-	bkup_check_dict_1 = md5sumscript.check_md5(bkup_checkfilepath_1, new_bkup_md5_list_1)
-	org_check_dict_4 = md5sumscript.check_md5(org_checkfilepath_4, new_org_md5_list_4)
-	bkup_check_dict_4 = md5sumscript.check_md5(bkup_checkfilepath_4, new_bkup_md5_list_4)
-	org_check_dict_7 = md5sumscript.check_md5(org_checkfilepath_7, new_org_md5_list_7)
+	org_check_dict_1, org_md5_bam_dict_1 = md5sumscript.check_md5(org_checkfilepath_1, new_org_md5_list_1)
+	bkup_check_dict_1, bkup_md5_bam_dict_1 = md5sumscript.check_md5(bkup_checkfilepath_1, new_bkup_md5_list_1)
+	org_check_dict_4, org_md5_bam_dict_4 = md5sumscript.check_md5(org_checkfilepath_4, new_org_md5_list_4)
+	bkup_check_dict_4, bkup_md5_bam_dict_4 = md5sumscript.check_md5(bkup_checkfilepath_4, new_bkup_md5_list_4)
+	org_check_dict_7, org_md5_bam_dict_7 = md5sumscript.check_md5(org_checkfilepath_7, new_org_md5_list_7)
 
 	# this checks the check_dict created by the check_md5 function contain the correct data for each scenario
 
@@ -896,35 +896,6 @@ def test_check_md5(scenario_1_fixture, scenario_4_fixture, scenario_7_fixture):
 				else:
 					continue
 
-@pytest.mark.usefixtures("scenario_9_fixture")
-def test_create_check_dict(scenario_9_fixture):
-
-	"""use scenario 9, test that create_check_dict creates a dictionary with two nested dictionary, one with "storage" as key, the other "archive" as key.
-	create a check_dict before adding the md5s to use it as a negative control, and create a check_dict after adding the md5s as a positive control"""
-
-	new_org_rf_path_9, new_bkup_rf_path_9, new_org_bam_9, new_bkup_bam_9 = scenario_9_fixture
-
-	org_checkfilepath_9 = md5sumscript.create_logfile(new_org_rf_path_9)
-	bkup_checkfilepath_9 = md5sumscript.create_logfile(new_bkup_rf_path_9)
-
-	new_org_bam_list_9, new_org_md5_list_9 = md5sumscript.create_two_lists(new_org_rf_path_9)
-	new_bkup_bam_list_9, new_bkup_md5_list_9 = md5sumscript.create_two_lists(new_bkup_rf_path_9)
-
-	check_dict_9 = {}
-	check_dict_9 = md5sumscript.create_check_dict(org_checkfilepath_9, bkup_checkfilepath_9, new_org_md5_list_9, new_bkup_md5_list_9, check_dict_9)
-
-	# negative control (e.g. no key value pair should be present)
-	assert check_dict_9 == {}, "key value pair wrongly present in dictionary"
-
-	#positive control
-
-	new_org_md5_list_9 = md5sumscript.create_md5(new_org_bam_list_9, new_org_rf_path_9)
-	new_bkup_md5_list_9 = md5sumscript.create_md5(new_bkup_bam_list_9, new_bkup_rf_path_9)
-	check_dict_9 = md5sumscript.create_check_dict(org_checkfilepath_9, bkup_checkfilepath_9, new_org_md5_list_9, new_bkup_md5_list_9, check_dict_9)
-
-	assert check_dict_9["storage"] == {"sample13.bam.md5" : "7e6310d5883b4f7277416bc7d8333d99"}, "key value pair NOT present in storage, check create_check_dict function"
-	assert check_dict_9["archive"] == {"sample13.bam.md5" : "7e6310d5883b4f7277416bc7d8333d99"}, "key value pair NOT present in archive, check create_check_dict function"
-
 @pytest.mark.usefixtures("scenario_7_fixture")
 def test_check_filename(scenario_7_fixture):
 
@@ -937,10 +908,9 @@ def test_check_filename(scenario_7_fixture):
        
 	org_checkfilepath_7 = md5sumscript.create_logfile(new_org_rf_path_7)
 	bkup_checkfilepath_7 = md5sumscript.create_logfile(new_bkup_rf_path_7)
-	
-	check_dict_7 = {}
 
-	check_dict_7 = md5sumscript.create_check_dict(org_checkfilepath_7, bkup_checkfilepath_7, new_org_md5_list_7, new_bkup_md5_list_7, check_dict_7)
+	org_check_dict_7, org_md5_bam_dict_7 = md5sumscript.check_md5(org_checkfilepath_7, new_org_md5_list_7)
+	bkup_check_dict_7, bkup_md5_bam_dict_7 = md5sumscript.check_md5(bkup_checkfilepath_7, new_bkup_md5_list_7)
 
 	# for new_org_md5_7 created above, take only the md5_filename from the file path
 		
@@ -948,9 +918,8 @@ def test_check_filename(scenario_7_fixture):
 
 	# md5_filename should be in check_dict["storage"], but not check_dict["archive"]
 
-	assert md5sumscript.check_md5filename(new_org_rf_path_7, md5_filename, check_dict_7["storage"]), "md5 NOT in storage, check create_check_dict function"
-	check_dict_7["archive"] = {}
-	assert not md5sumscript.check_md5filename(new_bkup_rf_path_7, md5_filename, check_dict_7["archive"]), "md5 in archive check create_check_dict function"
+	assert md5sumscript.check_md5filename(new_org_rf_path_7, md5_filename, org_check_dict_7), "md5 NOT in storage, check create_check_dict function"
+	assert not md5sumscript.check_md5filename(new_bkup_rf_path_7, md5_filename, bkup_check_dict_7), "md5 in archive check create_check_dict function"
 
 @pytest.mark.usefixtures("scenario_6_fixture", "scenario_4_fixture")
 def test_compare_md5hash(scenario_6_fixture, scenario_4_fixture):
@@ -974,31 +943,38 @@ def test_compare_md5hash(scenario_6_fixture, scenario_4_fixture):
 	org_checkfilepath_4 = md5sumscript.create_logfile(new_org_rf_path_4)
 	bkup_checkfilepath_4 = md5sumscript.create_logfile(new_bkup_rf_path_4)
 
-	check_dict_6 = {}
-	check_dict_4 = {}
-
-	check_dict_6 = md5sumscript.create_check_dict(org_checkfilepath_6, bkup_checkfilepath_6, new_org_md5_list_6, new_bkup_md5_list_6, check_dict_6)
-	check_dict_4 = md5sumscript.create_check_dict(org_checkfilepath_4, bkup_checkfilepath_4, new_org_md5_list_4, new_bkup_md5_list_4, check_dict_4)
+	org_check_dict_6, org_md5_bam_dict_6 = md5sumscript.check_md5(org_checkfilepath_6, new_org_md5_list_6)
+	bkup_check_dict_6, bkup_md5_bam_dict_6 = md5sumscript.check_md5(bkup_checkfilepath_6, new_bkup_md5_list_6)
+	org_check_dict_4, org_md5_bam_dict_4 = md5sumscript.check_md5(org_checkfilepath_4, new_org_md5_list_4)
+	bkup_check_dict_4, bkup_md5_bam_dict_4 = md5sumscript.check_md5(bkup_checkfilepath_4, new_bkup_md5_list_4)
 
 	# for matching hashes, check that the compare_md5hash function returns True
 
 	for md5 in new_org_md5_list_4:
 		md5_filename = md5.strip().split("/")[-1]
-		assert md5sumscript.compare_md5hash(md5_filename, check_dict_4), "hash matching, but output is False, compare_md5hash function NOT working"
+		original_hash = org_check_dict_4[md5_filename]
+		backup_hash = bkup_check_dict_4[md5_filename]
+		assert md5sumscript.compare_md5hash(original_hash, backup_hash), "hash matching, but output is False, compare_md5hash function NOT working"
 
 	for md5 in new_bkup_md5_list_4:
 		md5_filename = md5.strip().split("/")[-1]
-		assert md5sumscript.compare_md5hash(md5_filename, check_dict_4), "hash matching, but output is False, compare_md5hash function NOT working"
+		original_hash = org_check_dict_4[md5_filename]
+		backup_hash = bkup_check_dict_4[md5_filename]
+		assert md5sumscript.compare_md5hash(original_hash, backup_hash), "hash matching, but output is False, compare_md5hash function NOT working"
 
 	#for mismatch hashes,  check that the compare_md5hash function returns False
 
 	for md5 in new_org_md5_list_6:
 		md5_filename = md5.strip().split("/")[-1]
-		assert not md5sumscript.compare_md5hash(md5_filename, check_dict_6), "hash matching, but output is True, compare_md5hash function NOT working"
+		original_hash = org_check_dict_6[md5_filename]
+		backup_hash = bkup_check_dict_6[md5_filename]
+		assert not md5sumscript.compare_md5hash(original_hash, backup_hash), "hash matching, but output is True, compare_md5hash function NOT working"
 	
 	for md5 in new_bkup_md5_list_6:
 		md5_filename = md5.strip().split("/")[-1]
-		assert not md5sumscript.compare_md5hash(md5_filename, check_dict_6), "hash not matching, but output is True, compare_md5hash function NOT working"
+		original_hash = org_check_dict_6[md5_filename]
+		backup_hash = bkup_check_dict_6[md5_filename]
+		assert not md5sumscript.compare_md5hash(original_hash, backup_hash), "hash not matching, but output is True, compare_md5hash function NOT working"
 
 @pytest.mark.usefixtures("scenario_6_fixture", "scenario_4_fixture")
 def test_check_hash_exist(scenario_6_fixture, scenario_4_fixture):
@@ -1021,30 +997,29 @@ def test_check_hash_exist(scenario_6_fixture, scenario_4_fixture):
 	org_checkfilepath_4 = md5sumscript.create_logfile(new_org_rf_path_4)
 	bkup_checkfilepath_4 = md5sumscript.create_logfile(new_bkup_rf_path_4)
 
-	check_dict_6 = {}
-	check_dict_4 = {}
-
-	check_dict_6 = md5sumscript.create_check_dict(org_checkfilepath_6, bkup_checkfilepath_6, new_org_md5_list_6, new_bkup_md5_list_6, check_dict_6)
-	check_dict_4 = md5sumscript.create_check_dict(org_checkfilepath_4, bkup_checkfilepath_4, new_org_md5_list_4, new_bkup_md5_list_4, check_dict_4)
+	org_check_dict_6, org_md5_bam_dict_6 = md5sumscript.check_md5(org_checkfilepath_6, new_org_md5_list_6)
+	bkup_check_dict_6, bkup_md5_bam_dict_6 = md5sumscript.check_md5(bkup_checkfilepath_6, new_bkup_md5_list_6)
+	org_check_dict_4, bkup_md5_bam_dict_4 = md5sumscript.check_md5(org_checkfilepath_4, new_org_md5_list_4)
+	bkup_check_dict_4, bkup_md5_bam_dict_4 = md5sumscript.check_md5(bkup_checkfilepath_4, new_bkup_md5_list_4)
 
 	# for hashes that are present in opposite runfolder
 
 	for md5 in new_org_md5_list_4:
 		md5_filename = md5.strip().split("/")[-1]
-		assert md5sumscript.check_hash_exist(md5_filename, check_dict_4.get("storage"), check_dict_4.get("archive")), "check_hash_exist function NOT working"
+		assert md5sumscript.check_hash_exist(md5_filename, org_check_dict_4, bkup_check_dict_4), "check_hash_exist function NOT working"
 	
 	for md5 in new_bkup_md5_list_4:
 		md5_filename = md5.strip().split("/")[-1]
-		assert md5sumscript.check_hash_exist(md5_filename, check_dict_4.get("archive"), check_dict_4.get("storage")), "check_hash_exist function NOT working"
+		assert md5sumscript.check_hash_exist(md5_filename, bkup_check_dict_4, org_check_dict_4), "check_hash_exist function NOT working"
 
 	#for hashes that are NOT present in opposite runfolder
 	for md5 in new_org_md5_list_6:
 		md5_filename = md5.strip().split("/")[-1]
-		assert not md5sumscript.check_hash_exist(md5_filename, check_dict_6.get("storage"), check_dict_6.get("archive")), "check_hash_exist function NOT working"
+		assert not md5sumscript.check_hash_exist(md5_filename, org_check_dict_6, bkup_check_dict_6), "check_hash_exist function NOT working"
 	
 	for md5 in new_bkup_md5_list_6:
 		md5_filename = md5.strip().split("/")[-1]
-		assert not md5sumscript.check_hash_exist(md5_filename, check_dict_6.get("archive"), check_dict_6.get("storage")), "check_hash_exist function NOT working"
+		assert not md5sumscript.check_hash_exist(md5_filename, bkup_check_dict_6, org_check_dict_6), "check_hash_exist function NOT working"
 
 @pytest.mark.usefixtures("scenario_1_fixture", "scenario_2_fixture", "scenario_6_fixture", "scenario_8_fixture")		
 def test_check_org_bkup(scenario_1_fixture, scenario_2_fixture, scenario_6_fixture, scenario_8_fixture):
@@ -1083,24 +1058,21 @@ def test_check_org_bkup(scenario_1_fixture, scenario_2_fixture, scenario_6_fixtu
 
 	checkfilepaths = [org_checkfilepath_1, bkup_checkfilepath_1, org_checkfilepath_2, bkup_checkfilepath_2, org_checkfilepath_6, bkup_checkfilepath_6, org_checkfilepath_8, bkup_checkfilepath_8]
 
-	check_dict_1_2 = {}
-	check_dict_6 = {}
-	check_dict_8 = {}
-	check_dict_6_8 = {}
+	# create check_dict with original and backup check file path and md5_lists
+
+	org_check_dict_1, org_md5_bam_dict_1 = md5sumscript.check_md5(org_checkfilepath_1, new_org_md5_list_1)
+	bkup_check_dict_2, bkup_md5_bam_dict_2 = md5sumscript.check_md5(bkup_checkfilepath_2, new_bkup_md5_list_2)
+	org_check_dict_6, org_md5_bam_dict_6 = md5sumscript.check_md5(org_checkfilepath_6, new_org_md5_list_6)
+	bkup_check_dict_6, bkup_md5_bam_dict_6 = md5sumscript.check_md5(bkup_checkfilepath_6, new_bkup_md5_list_6)
+	org_check_dict_8, org_md5_bam_dict_8 = md5sumscript.check_md5(org_checkfilepath_8, new_org_md5_list_8)
+	bkup_check_dict_8, bkup_md5_bam_dict_8 = md5sumscript.check_md5(bkup_checkfilepath_8, new_bkup_md5_list_8)
 	
-	# create check_dict with cross referenced original and backup check file path and md5_lists --> creation of md5_in_org_not_in_bkup and md5_in_bkup_not_org dictionaries
-
-	check_dict_1_2 = md5sumscript.create_check_dict(org_checkfilepath_1, bkup_checkfilepath_2, new_org_md5_list_1, new_bkup_md5_list_2, check_dict_1_2)
-	check_dict_6 = md5sumscript.create_check_dict(org_checkfilepath_6, bkup_checkfilepath_6, new_org_md5_list_6, new_bkup_md5_list_6, check_dict_6)
-	check_dict_8 = md5sumscript.create_check_dict(org_checkfilepath_8, bkup_checkfilepath_8, new_org_md5_list_8, new_bkup_md5_list_8, check_dict_8)
-	check_dict_6_8 = md5sumscript.create_check_dict(org_checkfilepath_6, bkup_checkfilepath_8, new_org_md5_list_6, new_bkup_md5_list_8, check_dict_6_8)
-
 	# create check_dict with cross referenced original and backup runfolder paths and check_dicts
 
-	md5_matches_1_2, md5_mismatches_1_2, md5_in_org_not_bkup_1_2, md5_in_bkup_not_org_1_2  = md5sumscript.check_org_bkup(new_org_rf_path_1, new_bkup_rf_path_2, check_dict_1_2)
-	md5_matches_6, md5_mismatches_6, md5_in_org_not_bkup_6, md5_in_bkup_not_org_6 = md5sumscript.check_org_bkup(new_org_rf_path_6, new_bkup_rf_path_6, check_dict_6)
-	md5_matches_8, md5_mismatches_8, md5_in_org_not_bkup_8, md5_in_bkup_not_org_8 = md5sumscript.check_org_bkup(new_org_rf_path_8, new_bkup_rf_path_8, check_dict_8)
-	md5_matches_6_8, md5_mismatches_6_8, md5_in_org_not_bkup_6_8, md5_in_bkup_not_org_6_8 = md5sumscript.check_org_bkup(new_org_rf_path_6, new_bkup_rf_path_8, check_dict_6_8)
+	md5_matches_1_2, md5_mismatches_1_2, md5_in_org_not_bkup_1_2, md5_in_bkup_not_org_1_2 = md5sumscript.check_org_bkup(new_org_rf_path_1, new_bkup_rf_path_2, org_checkfilepath_1, bkup_checkfilepath_2, org_check_dict_1, bkup_check_dict_2)
+	md5_matches_6, md5_mismatches_6, md5_in_org_not_bkup_6, md5_in_bkup_not_org_6 = md5sumscript.check_org_bkup(new_org_rf_path_6, new_bkup_rf_path_6, org_checkfilepath_6, bkup_checkfilepath_6, org_check_dict_6, bkup_check_dict_6)
+	md5_matches_8, md5_mismatches_8, md5_in_org_not_bkup_8, md5_in_bkup_not_org_8 = md5sumscript.check_org_bkup(new_org_rf_path_8, new_bkup_rf_path_8, org_checkfilepath_8, bkup_checkfilepath_8, org_check_dict_8, bkup_check_dict_8)
+	md5_matches_6_8, md5_mismatches_6_8, md5_in_org_not_bkup_6_8, md5_in_bkup_not_org_6_8 = md5sumscript.check_org_bkup(new_org_rf_path_6, new_bkup_rf_path_8, org_checkfilepath_6, bkup_checkfilepath_8, org_check_dict_6, bkup_check_dict_8)
 
 	# check md5_matches dictionary content for each md5 and associated hash (same md5 filename, same hash)
 
