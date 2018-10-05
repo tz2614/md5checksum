@@ -1,0 +1,2 @@
+number of bams checked: 1
+ average time taken to check /mnt/storage/home/zhengt/projects/md5checksum/180323_K00178/original: 1000.48277688

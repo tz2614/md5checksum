@@ -12,21 +12,28 @@ def time_md5sum (timefile, rf_path):
 
     assert os.path.exists(timefile)
 
+    """open md5_check.txt log file and find the line where the estimated program run time is recorded"""
+
     with open (timefile) as file_handle:
         for line in file_handle:
             # strip out the spaces at the end of each line.
             fields = line.strip()
             if "and" in fields and ":" in fields:
+                fields = fields.split(" ")
                 per_runfolder_times.append(fields[-1])
 
-    #print (per_runfolder_times)
+    """calculate the average time by taking the sum of all the estimated time and divide by the number of time the runfolder has been checked"""
+
     if len(per_runfolder_times) >= 1:
         per_runfolder_time = sum([float(x) for x in per_runfolder_times])/len(per_runfolder_times)
     else:
         per_runfolder_time = [float(x) for x in per_runfolder_times]
     
+    """record the average time in the runfolder where the md5_check.txt log file is located, 
+        when the runfolder has been checked multiple times, the script can be re-run to calculate new average time"""
+
     with open(os.path.join(rf_path, 'average_time.txt'), 'w+') as timetext:
-        bam_num = ""
+        num_check = ""
         avg_time = ""
         if timetext.readline():                
             for line in timetext:
@@ -38,7 +45,7 @@ def time_md5sum (timefile, rf_path):
                     avg_time += per_runfolder_time
                 else:
                     continue
-            timetext.writelines("number of bams checked: {}\n average time taken to check {}: {}\n".format(len(bam_num), rf_path, avg_time))
+            timetext.writelines("number of bams checked: {}\n average time taken to check {}: {}\n".format(len(num_check), rf_path, avg_time))
             print ("average time taken to check file integrity for {}: {}".format(rf_path, avg_time))
 
         else:
@@ -63,5 +70,5 @@ if __name__ == "__main__":
 
 """From terminal navigate to the directory where the script is stored, 
     
-    enter "python average_time.py", followed by the filepath to the time.txt file to calculate the average time taken to check bam integrity
+    enter "python average_time.py", followed by the filepath to the md5_check.xtxt file to calculate the average time taken to check bam integrity
     e.g. /mnt/storage/home/zhengt/projects/md5sum/testrunfolders/test_000001_current_runfolder/time.txt"""
