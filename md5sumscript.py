@@ -85,23 +85,46 @@ def create_two_lists(rf_path):
     
     return create_list, check_list
 
-def check_md5_exist(md5_path, rf_path):
+def create_logfile(rf_path):
 
-    #check if the md5 file is present or not, if the md5 file is missing record this in the md5_check.txt log file.
+    """create a log file in the specified runfolder called md5_check.txt file"""
 
-        if os.path.exists(md5_path):
-            with open (os.path.join(rf_path, "md5_check.txt"), 'a') as md5_check:
-                md5_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
-                md5_check.writelines('{} present\n'.format(md5_path))
-            return True
+    checkfilepath = os.path.abspath((os.path.join(rf_path, "md5_check.txt")))
 
-        else:
-            with open (os.path.join(rf_path, "md5_check.txt"), 'a') as md5_check:
-                md5_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
-                md5_check.writelines('{} missing\n'.format(md5_path))
-            return False
+    try:
+        with open (checkfilepath, 'a') as md5_check:
+            pass
 
-def create_md5(create_list, rf_path):
+    except IOError:
+        checkfilepath = os.path.abspath(os.path.join(input('Enter a directory where you have write permission to store the log file: '), "md5_check.txt"))
+        assert os.path.exists(checkfilepath), "path given DO NOT exist, try another"
+        return checkfilepath
+
+    if os.path.exists(checkfilepath):
+        return checkfilepath
+
+    else:
+        createchk = "touch {}".format(checkfilepath)
+        subprocess.call(createchk, shell=True)
+        return checkfilepath
+
+def check_md5_exist(md5_path, checkfilepath):
+
+    """check if the md5 file is present or not, if the md5 file is missing record this in the md5_check.txt log file."""
+    
+    if os.path.exists(md5_path):
+        with open (checkfilepath, 'a') as md5_check:
+            md5_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
+            md5_check.writelines('{} present\n'.format(md5_path))
+        return True
+
+    else:
+        with open (checkfilepath, 'a') as md5_check:
+            md5_check.writelines("time of check: {}\n".format(datetime.datetime.now()))
+            md5_check.writelines('{} missing\n'.format(md5_path))
+        return False
+
+def create_md5(create_list, rf_path, checkfilepath):
 
     """check the bam.md5 list, and see if each bam.md5 file exist. 
     If md5 associated with bam do not exist, create the md5 file"""
@@ -117,7 +140,7 @@ def create_md5(create_list, rf_path):
         if bam.endswith(".bam"):
             md5file = bam + ".md5"
 
-        if check_md5_exist(md5file, rf_path):
+        if check_md5_exist(md5file, checkfilepath):
             continue
 
         else:
@@ -128,7 +151,7 @@ def create_md5(create_list, rf_path):
             subprocess.call(createmd5, shell=True)
             print ("new md5 file {} generated".format(md5file))
             new_md5_list.append(md5file)
-            with open (os.path.join(rf_path, "md5_check.txt"), 'a') as new_md5:
+            with open (checkfilepath, 'a') as new_md5:
                 new_md5.writelines('new md5 file {} generated\n'.format(md5file))
                 new_md5.writelines("time of generation: {}\n".format(datetime.datetime.now()))
 
@@ -136,23 +159,6 @@ def create_md5(create_list, rf_path):
         print "list of new md5s generated: {}".format(new_md5_list)
     
     return new_md5_list
-
-def create_logfile(rf_path):
-
-    """create a log file in the specified runfolder called DATE.chk file, where DATE is in the format YYYY-MM-DD"""
-
-    checkfile = str(datetime.datetime.now()).split(" ")[0] + ".chk"
-    checkfilepath = os.path.join(rf_path, checkfile)
-    checkfilepath = os.path.abspath(checkfilepath)
-
-    if os.path.exists(checkfilepath):
-        print ('{} has already been checked today'.format(rf_path))
-
-    else:
-        createchk = "touch {}".format(checkfilepath)
-        subprocess.call(createchk, shell=True)
-
-    return checkfilepath
 
 def check_md5_hash(checkfilepath, md5_filename, checksum):
 
@@ -499,30 +505,16 @@ def main(org_rf_path, bkup_rf_path):
     org_create_list, org_check_list = create_two_lists(org_rf_path)
     bkup_create_list, bkup_check_list = create_two_lists(bkup_rf_path)
 
-    #check the create_list of bam files to see if .md5 files for each bam file is present, if not generate it.
-    new_md5_list_in_org = create_md5(org_create_list, org_rf_path)
-    new_md5_list_in_bkup = create_md5(bkup_create_list, bkup_rf_path)
-
-    new_check_list_in_org = org_check_list + new_md5_list_in_org
-    new_check_list_in_bkup = bkup_check_list + new_md5_list_in_bkup
-
     #create the log files and return the file paths
     org_checkfilepath = create_logfile(org_rf_path)
     bkup_checkfilepath = create_logfile(bkup_rf_path)
 
-    try:
-        with open(org_checkfilepath, "a") as check_file:
-            check_file.writelines("testing")
-    except PermissionError:
-        org_checkfilepath = create_logfile(input('Enter a directory where you have write permission to write to store the log file e.g./mnt//storage/home/zhengt/md5checksum/'))
-        assert os.path.exists(org_checkfilepath), "path given DO NOT exist, try another"
+    #check the create_list of bam files to see if .md5 files for each bam file is present, if not generate it.
+    new_md5_list_in_org = create_md5(org_create_list, org_rf_path, org_checkfilepath)
+    new_md5_list_in_bkup = create_md5(bkup_create_list, bkup_rf_path, bkup_checkfilepath)
 
-    try:
-        with open(bkup_checkfilepath, "a") as check_file:
-            check_file.writelines("testing")
-    except PermissionError:
-        bkup_checkfilepath = create_logfile(input('Enter a directory where you have write permission to stor the log file e.g./mnt//storage/home/zhengt/md5checksum/'))
-        assert os.path.exists(bkup_checkfilepath), "path given DO NOT exist, try another"
+    new_check_list_in_org = org_check_list + new_md5_list_in_org
+    new_check_list_in_bkup = bkup_check_list + new_md5_list_in_bkup
 
     #create a dictionary containing the md5 filenames and its associated md5 hash for backup and original runfolder
     org_check_dict, org_md5_bam_dict = check_md5(org_checkfilepath, new_check_list_in_org)
