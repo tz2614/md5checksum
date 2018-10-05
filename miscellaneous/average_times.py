@@ -16,12 +16,14 @@ def time_md5sum (timefile, rf_path):
         for line in file_handle:
             # strip out the spaces at the end of each line.
             fields = line.strip()
-            if "and" and ":" in fields:
+            if "and" in fields and ":" in fields:
                 per_runfolder_times.append(fields[-1])
 
     #print (per_runfolder_times)
- 
-    per_runfolder_time = sum([float(x) for x in per_runfolder_times])/len(per_runfolder_times)
+    if len(per_runfolder_times) >= 1:
+        per_runfolder_time = sum([float(x) for x in per_runfolder_times])/len(per_runfolder_times)
+    else:
+        per_runfolder_time = [float(x) for x in per_runfolder_times]
     
     with open(os.path.join(rf_path, 'average_time.txt'), 'w+') as timetext:
         bam_num = ""

@@ -65,7 +65,7 @@ git clone https://git.ctrulab.uk/zhengt/md5checksum
 - If you know where you bam files are located, then try to use the full path to the directory if possible.
 - If you only have one runfolder, then I would suggest running md5sumscript_for1runfolder.py located in the /miscellaneous directory instead.
 
-4.Navigate to the directory md5checksum/ and execute the program for two runfolders, e.g. named "runfolder1" and "runfolder2" here for demonstration purposes, type the following on command line
+4.Navigate to the directory md5checksum/, make sure you have read and write permission in this folder, then execute the program for two runfolders, e.g. named "runfolder1" and "runfolder2" here for demonstration purposes, type the following on command line
 
 ```Bash
 $python md5sumscript.py runfolder1 runfolder2
@@ -108,7 +108,7 @@ $python md5sumscript.py runfolder1 runfolder2
 20>estimate of program run time: ###
 ```
 
-After the program is complete, a summary table of all md5s in the original and backup runfolders is created in your working directory called "md5_table.html". An example of this can be seen here
+After the program is complete, a summary table of all md5s in the original and backup runfolders is created in your working directory, called "md5_table.html". An example of this can be seen here
 
 runfolder1/ and runfolder2/
 

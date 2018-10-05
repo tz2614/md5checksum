@@ -438,33 +438,40 @@ def test_check_md5_exist(scenario_1_fixture, scenario_9_fixture):
 
 	new_org_rf_path_1, new_bkup_rf_path_1, new_org_bam_1, new_org_md5_1, new_bkup_bam_1, new_bkup_md5_1 = scenario_1_fixture
 	new_org_rf_path_9, new_bkup_rf_path_9, new_org_bam_9, new_bkup_bam_9 = scenario_9_fixture
+
+	org_checkfilepath_1 = md5sumscript.create_logfile(new_org_rf_path_1)
+	bkup_checkfilepath_1 = md5sumscript.create_logfile(new_bkup_rf_path_1)
+	org_checkfilepath_9 = md5sumscript.create_logfile(new_org_rf_path_9)
 	
-	assert md5sumscript.check_md5_exist(new_org_md5_1, new_org_rf_path_1), "ERROR, md5 DO NOT exist" # positive control
-	assert not md5sumscript.check_md5_exist(os.path.join(new_org_rf_path_9, "sample13.bam.md5"), new_org_rf_path_9), "ERROR, md5 generated" # negative control
+	assert md5sumscript.check_md5_exist(new_org_md5_1, org_checkfilepath_1), "ERROR, md5 DO NOT exist" # positive control
+	assert md5sumscript.check_md5_exist(new_bkup_md5_1, bkup_checkfilepath_1), "ERROR, md5 DO NOT exist" # positive control
+	assert not md5sumscript.check_md5_exist(os.path.join(new_org_rf_path_9, "sample13.bam.md5"), org_checkfilepath_9), "ERROR, md5 generated" # negative control
 
 	md5_list = [new_org_md5_1, new_bkup_md5_1]
 
-	# check that md5_missing log is created in the same directory as the md5, and that the check is recorded correctly
+	# check that md5_check.txt log is created in the same directory as the md5, and that the check is recorded correctly
 
 	for md5 in md5_list:
-		
-		logfile = "".join(md5.split("/")[:-1]) + "md5_missing.txt"
 
 		try:
-			f = open (logfile, 'r')
+			f = open (org_checkfilepath_1, 'r')
 			lines = f.readlines()
 			for line in lines:
 				if line.startswith("time of check:"):
 					print ("time logged")
+					return True
 				elif "present" in line:
 					print (md5, "OK")
-				elif "file missing" in line:
+					return True
+				elif "missing" in line:
 					print (md5, "missing status recorded")
+					return True
 				else:
-					"ERROR, incorrect log recorded"
+					print ("ERROR, incorrect log recorded")
+					return False
 
-		except:
-			return None
+		except IOError:
+			return IOError
 
 @pytest.mark.usefixtures("scenario_7_fixture")
 def test_create_md5(scenario_7_fixture):
@@ -476,8 +483,11 @@ def test_create_md5(scenario_7_fixture):
 	org_bam_list_7, org_md5_list_7 = md5sumscript.create_two_lists(new_org_rf_path_7)
 	bkup_bam_list_7, bkup_md5_list_7 = md5sumscript.create_two_lists(new_bkup_rf_path_7)
 
-	new_org_md5_list_7 = md5sumscript.create_md5(org_bam_list_7, new_org_rf_path_7)
-	new_bkup_md5_list_7 = md5sumscript.create_md5(bkup_bam_list_7, new_bkup_rf_path_7)
+	org_checkfilepath_7 = md5sumscript.create_logfile(new_org_rf_path_7)
+	bkup_checkfilepath_7 = md5sumscript.create_logfile(new_bkup_rf_path_7)
+
+	new_org_md5_list_7 = md5sumscript.create_md5(org_bam_list_7, new_org_rf_path_7, org_checkfilepath_7)
+	new_bkup_md5_list_7 = md5sumscript.create_md5(bkup_bam_list_7, new_bkup_rf_path_7, bkup_checkfilepath_7)
 
 	# check that the new_md5_lists contain md5s, and that they exist
 
@@ -497,11 +507,11 @@ def test_create_md5(scenario_7_fixture):
 
 	assert md5_list == new_md5s, "some or all of the md5s in the new_md5_list are missing or NOT created"
 
-	# check the log file md5_missing.txt have recorded the new md5 files that have been generated, check that the time is also recorded
+	# check the log file md5_check.txt have recorded the new md5 files that have been generated, check that the time is also recorded
 
 	for md5 in md5_list:
 
-		logfile = "".join(md5.split("/")[:-1]) + "md5_missing.txt"
+		logfile = "".join(md5.split("/")[:-1]) + "md5_check.txt"
 
 		try:
 
@@ -538,24 +548,13 @@ def test_create_logfile(scenario_2_fixture):
 	for rf_path in rf_path_list:
 		assert os.access((rf_path), os.R_OK), "NO read permission for {}".format(rf_path)
 
-	# check the checkfile is in the correct format e.g YYYY-MM-DD.chk, and that they exist"""
+	# check the log file created exist"""
 
 	for rf_path in rf_path_list:		
 		checkfilepath = md5sumscript.create_logfile(rf_path)
 
 		assert os.path.exists(checkfilepath), "{} DO NOT exist".format(checkfilepath)
 
-		year = checkfilepath.split("/")[-1].split("-")[0]
-		month = checkfilepath.split("/")[-1].split("-")[1]
-		day = checkfilepath.split("/")[-1].split("-")[2].split(".")[0]
-		filetype = checkfilepath.split("/")[-1].split("-")[-1].split(".")[-1]
-		assert year.isdigit(), "year given NOT a number" 
-		assert len(year) == 4, "year NOT 4 digit long" 
-		assert month.isdigit(), "month given NOT a number" 
-		assert len(month) == 2, "month given NOT 2 digit long" 
-		assert day.isdigit(), "day given NOT a number" 
-		assert len(day) == 2, "day given NOT 2 digit long" 
-		assert filetype == "chk", "file type NOT chk"	
 
 @pytest.mark.usefixtures("scenario_3_fixture")
 def test_check_md5_hash(scenario_3_fixture):
@@ -962,7 +961,7 @@ def test_compare_md5hash(scenario_6_fixture, scenario_4_fixture):
 		backup_hash = bkup_check_dict_4[md5_filename]
 		assert md5sumscript.compare_md5hash(original_hash, backup_hash), "hash matching, but output is False, compare_md5hash function NOT working"
 
-	#for mismatch hashes,  check that the compare_md5hash function returns False
+	# for mismatch hashes,  check that the compare_md5hash function returns False
 
 	for md5 in new_org_md5_list_6:
 		md5_filename = md5.strip().split("/")[-1]
@@ -1012,7 +1011,7 @@ def test_check_hash_exist(scenario_6_fixture, scenario_4_fixture):
 		md5_filename = md5.strip().split("/")[-1]
 		assert md5sumscript.check_hash_exist(md5_filename, bkup_check_dict_4, org_check_dict_4), "check_hash_exist function NOT working"
 
-	#for hashes that are NOT present in opposite runfolder
+	# for hashes that are NOT present in opposite runfolder
 	for md5 in new_org_md5_list_6:
 		md5_filename = md5.strip().split("/")[-1]
 		assert not md5sumscript.check_hash_exist(md5_filename, org_check_dict_6, bkup_check_dict_6), "check_hash_exist function NOT working"

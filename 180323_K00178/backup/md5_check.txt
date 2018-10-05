@@ -1,0 +1,295 @@
+time of check: 2018-10-05 17:20:42.374953
+/mnt/archive/data/NGS/180323_K00178/bams/X006200.bam.md5 present
+time of check: 2018-10-05 17:20:42.392223
+/mnt/archive/data/NGS/180323_K00178/bams/X006202.bam.md5 present
+time of check: 2018-10-05 17:20:42.394156
+/mnt/archive/data/NGS/180323_K00178/bams/X006204.bam.md5 present
+time of check: 2018-10-05 17:20:42.396066
+/mnt/archive/data/NGS/180323_K00178/bams/X006205.bam.md5 present
+time of check: 2018-10-05 17:20:42.397812
+/mnt/archive/data/NGS/180323_K00178/bams/X006215.bam.md5 present
+time of check: 2018-10-05 17:20:42.399566
+/mnt/archive/data/NGS/180323_K00178/bams/X006219.bam.md5 present
+time of check: 2018-10-05 17:20:42.401297
+/mnt/archive/data/NGS/180323_K00178/bams/X006228.bam.md5 present
+time of check: 2018-10-05 17:20:42.403040
+/mnt/archive/data/NGS/180323_K00178/bams/X006230.bam.md5 present
+time of check: 2018-10-05 17:20:42.404796
+/mnt/archive/data/NGS/180323_K00178/bams/X006231.bam.md5 present
+time of check: 2018-10-05 17:20:42.406556
+/mnt/archive/data/NGS/180323_K00178/bams/X006233.bam.md5 present
+time of check: 2018-10-05 17:20:42.408296
+/mnt/archive/data/NGS/180323_K00178/bams/X006234.bam.md5 present
+time of check: 2018-10-05 17:20:42.410018
+/mnt/archive/data/NGS/180323_K00178/bams/X006237.bam.md5 present
+time of check: 2018-10-05 17:20:42.411793
+/mnt/archive/data/NGS/180323_K00178/bams/X006238.bam.md5 present
+time of check: 2018-10-05 17:20:42.413572
+/mnt/archive/data/NGS/180323_K00178/bams/X006242.bam.md5 present
+time of check: 2018-10-05 17:20:42.415352
+/mnt/archive/data/NGS/180323_K00178/bams/X006245.bam.md5 present
+time of check: 2018-10-05 17:20:42.417103
+/mnt/archive/data/NGS/180323_K00178/bams/X006252.bam.md5 present
+time of check: 2018-10-05 17:20:42.418877
+/mnt/archive/data/NGS/180323_K00178/bams/X006262.bam.md5 present
+time of check: 2018-10-05 17:20:42.420590
+/mnt/archive/data/NGS/180323_K00178/bams/X006270.bam.md5 present
+time of check: 2018-10-05 17:20:42.422300
+/mnt/archive/data/NGS/180323_K00178/bams/X006286.bam.md5 present
+time of check: 2018-10-05 17:20:42.424020
+/mnt/archive/data/NGS/180323_K00178/bams/X006289.bam.md5 present
+time of check: 2018-10-05 17:20:42.452427
+/mnt/archive/data/NGS/180323_K00178/bams/X006291.bam.md5 present
+time of check: 2018-10-05 17:20:42.453793
+/mnt/archive/data/NGS/180323_K00178/bams/X006292.bam.md5 present
+time of check: 2018-10-05 17:20:42.455123
+/mnt/archive/data/NGS/180323_K00178/bams/X006305.bam.md5 present
+time of check: 2018-10-05 17:20:42.456440
+/mnt/archive/data/NGS/180323_K00178/bams/X006310.bam.md5 present
+X006200.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:28:22.956101
+OK, X006200.bam.md5: 8ea6a94d93ac9c1c3428af00cbba34c8 md5 hash in correct format
+time of filename check: 2018-10-05 17:28:22.957544
+OK, bam filename X006200.bam match X006200.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006200.bam.md5
+X006202.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:28:55.093123
+OK, X006202.bam.md5: 9348e4346479d0f3a04166eaa2441e89 md5 hash in correct format
+time of filename check: 2018-10-05 17:28:55.094554
+OK, bam filename X006202.bam match X006202.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006202.bam.md5
+X006204.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:29:19.592420
+OK, X006204.bam.md5: 3a0bc0f0aba07dea53dcd2965f7b5eb3 md5 hash in correct format
+time of filename check: 2018-10-05 17:29:19.593911
+OK, bam filename X006204.bam match X006204.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006204.bam.md5
+X006205.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:29:35.161538
+OK, X006205.bam.md5: 7e2f59487f73efe844d8f3410bc0dc9a md5 hash in correct format
+time of filename check: 2018-10-05 17:29:35.163027
+OK, bam filename X006205.bam match X006205.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006205.bam.md5
+X006215.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:29:57.915357
+OK, X006215.bam.md5: 2a241d907c4a3d04988fea88fb817d2b md5 hash in correct format
+time of filename check: 2018-10-05 17:29:57.916831
+OK, bam filename X006215.bam match X006215.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006215.bam.md5
+X006219.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:30:22.886045
+OK, X006219.bam.md5: 05255b50fed9b71f86b1833c8be6f4fe md5 hash in correct format
+time of filename check: 2018-10-05 17:30:22.887476
+OK, bam filename X006219.bam match X006219.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006219.bam.md5
+X006228.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:30:36.932743
+OK, X006228.bam.md5: a86a73e1155fa19c8c32562268f7a576 md5 hash in correct format
+time of filename check: 2018-10-05 17:30:36.934201
+OK, bam filename X006228.bam match X006228.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006228.bam.md5
+X006230.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:31:06.798998
+OK, X006230.bam.md5: 35abe26d997c5171f181459dea9e267d md5 hash in correct format
+time of filename check: 2018-10-05 17:31:06.800438
+OK, bam filename X006230.bam match X006230.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006230.bam.md5
+X006231.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:31:28.663954
+OK, X006231.bam.md5: f794dac4492cb58ac0668cd94062bff3 md5 hash in correct format
+time of filename check: 2018-10-05 17:31:28.665958
+OK, bam filename X006231.bam match X006231.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006231.bam.md5
+X006233.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:31:47.241368
+OK, X006233.bam.md5: 0b93fe7741bef6cb30cfe0de85f45458 md5 hash in correct format
+time of filename check: 2018-10-05 17:31:47.243332
+OK, bam filename X006233.bam match X006233.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006233.bam.md5
+X006234.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:32:02.822510
+OK, X006234.bam.md5: fc0734ff543ef6e2492a75e34c5d87b5 md5 hash in correct format
+time of filename check: 2018-10-05 17:32:02.844265
+OK, bam filename X006234.bam match X006234.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006234.bam.md5
+X006237.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:32:32.755805
+OK, X006237.bam.md5: ec2a5e33eb24235a09549d04a9ed8f94 md5 hash in correct format
+time of filename check: 2018-10-05 17:32:32.757717
+OK, bam filename X006237.bam match X006237.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006237.bam.md5
+X006238.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:32:53.811215
+OK, X006238.bam.md5: 75469e85779181cff51f1cd558c9088d md5 hash in correct format
+time of filename check: 2018-10-05 17:32:53.813122
+OK, bam filename X006238.bam match X006238.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006238.bam.md5
+X006242.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:33:18.723746
+OK, X006242.bam.md5: 2e0259750dd3ed058ed7d931af215f79 md5 hash in correct format
+time of filename check: 2018-10-05 17:33:18.725335
+OK, bam filename X006242.bam match X006242.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006242.bam.md5
+X006245.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:33:39.492902
+OK, X006245.bam.md5: a01f684c3f89f33f599a436536f2db86 md5 hash in correct format
+time of filename check: 2018-10-05 17:33:39.494438
+OK, bam filename X006245.bam match X006245.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006245.bam.md5
+X006252.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:33:53.717980
+OK, X006252.bam.md5: a1402f4207951aabf4e9e35f9697a918 md5 hash in correct format
+time of filename check: 2018-10-05 17:33:53.719845
+OK, bam filename X006252.bam match X006252.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006252.bam.md5
+X006262.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:34:12.207902
+OK, X006262.bam.md5: ee73388aa2ecc3a1feb04b7961222052 md5 hash in correct format
+time of filename check: 2018-10-05 17:34:12.210197
+OK, bam filename X006262.bam match X006262.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006262.bam.md5
+X006270.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:34:28.931996
+OK, X006270.bam.md5: 0a4ed964ca58436097477cf6d51ade76 md5 hash in correct format
+time of filename check: 2018-10-05 17:34:28.933926
+OK, bam filename X006270.bam match X006270.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006270.bam.md5
+X006286.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:34:43.798210
+OK, X006286.bam.md5: ea334166b3fe391ae1b77562837b27f2 md5 hash in correct format
+time of filename check: 2018-10-05 17:34:43.800137
+OK, bam filename X006286.bam match X006286.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006286.bam.md5
+X006289.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:35:01.619090
+OK, X006289.bam.md5: 6eaa4bd28d860e09ed82ff6c9c208d94 md5 hash in correct format
+time of filename check: 2018-10-05 17:35:01.620948
+OK, bam filename X006289.bam match X006289.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006289.bam.md5
+X006291.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:35:27.192735
+OK, X006291.bam.md5: 723fbace917deef875a149150209d0bd md5 hash in correct format
+time of filename check: 2018-10-05 17:35:27.217521
+OK, bam filename X006291.bam match X006291.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006291.bam.md5
+X006292.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:35:59.978034
+OK, X006292.bam.md5: ff667c9834e1cb1226aab451def25186 md5 hash in correct format
+time of filename check: 2018-10-05 17:35:59.979911
+OK, bam filename X006292.bam match X006292.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006292.bam.md5
+X006305.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:36:26.948379
+OK, X006305.bam.md5: 9ba2fb4fbb569ed113b996959bb38595 md5 hash in correct format
+time of filename check: 2018-10-05 17:36:26.950463
+OK, bam filename X006305.bam match X006305.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006305.bam.md5
+X006310.bam: OK
+
+md5sum check:
+time of hash check: 2018-10-05 17:36:48.144530
+OK, X006310.bam.md5: 1cb66f2e7c1c9444a9bf664ea4118121 md5 hash in correct format
+time of filename check: 2018-10-05 17:36:48.146463
+OK, bam filename X006310.bam match X006310.bam in /mnt/archive/data/NGS/180323_K00178/bams/X006310.bam.md5
+BACKUP vs ORIGINAL
+
+time of check: 2018-10-05 17:36:48.148425
+X006237.bam.md5 being checked
+OK, X006237.bam.md5 present in backup and original runfolder
+OK, X006237.bam.md5 has matching hash
+X006205.bam.md5 being checked
+OK, X006205.bam.md5 present in backup and original runfolder
+OK, X006205.bam.md5 has matching hash
+X006310.bam.md5 being checked
+OK, X006310.bam.md5 present in backup and original runfolder
+OK, X006310.bam.md5 has matching hash
+X006238.bam.md5 being checked
+OK, X006238.bam.md5 present in backup and original runfolder
+OK, X006238.bam.md5 has matching hash
+X006252.bam.md5 being checked
+OK, X006252.bam.md5 present in backup and original runfolder
+OK, X006252.bam.md5 has matching hash
+X006291.bam.md5 being checked
+OK, X006291.bam.md5 present in backup and original runfolder
+OK, X006291.bam.md5 has matching hash
+X006292.bam.md5 being checked
+OK, X006292.bam.md5 present in backup and original runfolder
+OK, X006292.bam.md5 has matching hash
+X006204.bam.md5 being checked
+OK, X006204.bam.md5 present in backup and original runfolder
+OK, X006204.bam.md5 has matching hash
+X006270.bam.md5 being checked
+OK, X006270.bam.md5 present in backup and original runfolder
+OK, X006270.bam.md5 has matching hash
+X006202.bam.md5 being checked
+OK, X006202.bam.md5 present in backup and original runfolder
+OK, X006202.bam.md5 has matching hash
+X006219.bam.md5 being checked
+OK, X006219.bam.md5 present in backup and original runfolder
+OK, X006219.bam.md5 has matching hash
+X006200.bam.md5 being checked
+OK, X006200.bam.md5 present in backup and original runfolder
+OK, X006200.bam.md5 has matching hash
+X006245.bam.md5 being checked
+OK, X006245.bam.md5 present in backup and original runfolder
+OK, X006245.bam.md5 has matching hash
+X006262.bam.md5 being checked
+OK, X006262.bam.md5 present in backup and original runfolder
+OK, X006262.bam.md5 has matching hash
+X006242.bam.md5 being checked
+OK, X006242.bam.md5 present in backup and original runfolder
+OK, X006242.bam.md5 has matching hash
+X006286.bam.md5 being checked
+OK, X006286.bam.md5 present in backup and original runfolder
+OK, X006286.bam.md5 has matching hash
+X006234.bam.md5 being checked
+OK, X006234.bam.md5 present in backup and original runfolder
+OK, X006234.bam.md5 has matching hash
+X006231.bam.md5 being checked
+OK, X006231.bam.md5 present in backup and original runfolder
+OK, X006231.bam.md5 has matching hash
+X006215.bam.md5 being checked
+OK, X006215.bam.md5 present in backup and original runfolder
+OK, X006215.bam.md5 has matching hash
+X006289.bam.md5 being checked
+OK, X006289.bam.md5 present in backup and original runfolder
+OK, X006289.bam.md5 has matching hash
+X006305.bam.md5 being checked
+OK, X006305.bam.md5 present in backup and original runfolder
+OK, X006305.bam.md5 has matching hash
+X006228.bam.md5 being checked
+OK, X006228.bam.md5 present in backup and original runfolder
+OK, X006228.bam.md5 has matching hash
+X006233.bam.md5 being checked
+OK, X006233.bam.md5 present in backup and original runfolder
+OK, X006233.bam.md5 has matching hash
+X006230.bam.md5 being checked
+OK, X006230.bam.md5 present in backup and original runfolder
+OK, X006230.bam.md5 has matching hash
+
+time taken to check bam files integrity in /mnt/storage/data/NGS/180323_K00178
+ and /mnt/archive/data/NGS/180323_K00178: 1000.48277688 
+
